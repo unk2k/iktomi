@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Routing tools &mdash; insanities v0.5 documentation</title>
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '0.5',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="insanities v0.5 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li><a href="index.html">insanities v0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="routing-tools">
+<h1>Routing tools<a class="headerlink" href="#routing-tools" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+</ul>
+<ul>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#webbaseclasses"><em>Base classes</em></a></dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#requesthandler"><em>RequestHandler</em></a></li>
+<li><a class="reference internal" href="#wrapper"><em>Wrapper</em></a></li>
+<li><a class="reference internal" href="#map"><em>Map</em></a></li>
+<li><a class="reference internal" href="#functionwrapper"><em>FunctionWrapper</em></a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#webdefaulthandlers"><em>Default handlers</em></a></dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#match"><em>match</em></a></li>
+<li><a class="reference internal" href="#method"><em>method</em></a></li>
+<li><a class="reference internal" href="#prefix"><em>prefix</em></a></li>
+<li><a class="reference internal" href="#subdomain"><em>subdomain</em></a></li>
+<li><a class="reference internal" href="#conf"><em>Conf</em></a></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="module-insanities.web.core">
+<span id="webbaseclasses"></span><h2>Base classes<a class="headerlink" href="#module-insanities.web.core" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="requesthandler">
+<span id="id1"></span><h3>RequestHandler<a class="headerlink" href="#requesthandler" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.core.RequestHandler">
+<em class="property">class </em><tt class="descclassname">insanities.web.core.</tt><tt class="descname">RequestHandler</tt><a class="headerlink" href="#insanities.web.core.RequestHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for all request handlers.</p>
+<dl class="method">
+<dt id="insanities.web.core.RequestHandler.handle">
+<tt class="descname">handle</tt><big>(</big><em>rctx</em><big>)</big><a class="headerlink" href="#insanities.web.core.RequestHandler.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method should be overridden in subclasses.</p>
+<p>It always takes rctx object as only argument and returns it</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="wrapper">
+<span id="id2"></span><h3>Wrapper<a class="headerlink" href="#wrapper" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.core.Wrapper">
+<em class="property">class </em><tt class="descclassname">insanities.web.core.</tt><tt class="descname">Wrapper</tt><a class="headerlink" href="#insanities.web.core.Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>A subclass of RequestHandler with other order of calling chained handlers.</p>
+<p>Base class for handlers wrapping execution of next chains. Subclasses should
+execute chained handlers in <a title="insanities.web.core.Wrapper.handle" class="reference internal" href="#insanities.web.core.Wrapper.handle"><tt class="xref docutils literal"><span class="pre">handle()</span></tt></a> method by calling <a title="insanities.web.core.Wrapper.exec_wrapped" class="reference internal" href="#insanities.web.core.Wrapper.exec_wrapped"><tt class="xref docutils literal"><span class="pre">exec_wrapped()</span></tt></a>
+method. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyWrapper</span><span class="p">(</span><span class="n">Wrapper</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rctx</span><span class="p">):</span>
+        <span class="n">do_smth</span><span class="p">(</span><span class="n">rctx</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">rctx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exec_wrapped</span><span class="p">(</span><span class="n">rctx</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">do_smth2</span><span class="p">(</span><span class="n">rctx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rctx</span>
+</pre></div>
+</div>
+<p><em>Note</em>: Be careful with exceptions. Chained method can throw exceptions including
+HttpExceptions. If you use wrappers to finalize some actions (close db connection,
+store http-sessions), it is recommended to use context managers
+(&#8220;with&#8221; statements) or try...finally constructions.</p>
+<dl class="method">
+<dt id="insanities.web.core.Wrapper.exec_wrapped">
+<tt class="descname">exec_wrapped</tt><big>(</big><em>rctx</em><big>)</big><a class="headerlink" href="#insanities.web.core.Wrapper.exec_wrapped" title="Permalink to this definition">¶</a></dt>
+<dd>Executes the wrapped chain. Should be called from <a title="insanities.web.core.Wrapper.handle" class="reference internal" href="#insanities.web.core.Wrapper.handle"><tt class="xref docutils literal"><span class="pre">handle()</span></tt></a> method.</dd></dl>
+
+<dl class="method">
+<dt id="insanities.web.core.Wrapper.handle">
+<tt class="descname">handle</tt><big>(</big><em>rctx</em><big>)</big><a class="headerlink" href="#insanities.web.core.Wrapper.handle" title="Permalink to this definition">¶</a></dt>
+<dd>Should be overriden in subclasses.</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="map">
+<span id="id3"></span><h3>Map<a class="headerlink" href="#map" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.core.Map">
+<em class="property">class </em><tt class="descclassname">insanities.web.core.</tt><tt class="descname">Map</tt><big>(</big><em>*handlers</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#insanities.web.core.Map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="functionwrapper">
+<span id="id4"></span><h3>FunctionWrapper<a class="headerlink" href="#functionwrapper" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.core.FunctionWrapper">
+<em class="property">class </em><tt class="descclassname">insanities.web.core.</tt><tt class="descname">FunctionWrapper</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#insanities.web.core.FunctionWrapper" title="Permalink to this definition">¶</a></dt>
+<dd>Wrapper for handler represented by function</dd></dl>
+
+</div>
+</div>
+<div class="section" id="default-handlers">
+<span id="webdefaulthandlers"></span><h2>Default handlers<a class="headerlink" href="#default-handlers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="match">
+<span id="id5"></span><h3>match<a class="headerlink" href="#match" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.filters.match">
+<em class="property">class </em><tt class="descclassname">insanities.web.filters.</tt><tt class="descname">match</tt><big>(</big><em>url</em>, <em>name</em>, <em>converters=None</em><big>)</big><a class="headerlink" href="#insanities.web.filters.match" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="method">
+<span id="id6"></span><h3>method<a class="headerlink" href="#method" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.filters.method">
+<em class="property">class </em><tt class="descclassname">insanities.web.filters.</tt><tt class="descname">method</tt><big>(</big><em>*names</em><big>)</big><a class="headerlink" href="#insanities.web.filters.method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="prefix">
+<span id="id7"></span><h3>prefix<a class="headerlink" href="#prefix" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.wrappers.prefix">
+<em class="property">class </em><tt class="descclassname">insanities.web.wrappers.</tt><tt class="descname">prefix</tt><big>(</big><em>_prefix</em><big>)</big><a class="headerlink" href="#insanities.web.wrappers.prefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="subdomain">
+<span id="id8"></span><h3>subdomain<a class="headerlink" href="#subdomain" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.wrappers.subdomain">
+<em class="property">class </em><tt class="descclassname">insanities.web.wrappers.</tt><tt class="descname">subdomain</tt><big>(</big><em>_subdomain</em><big>)</big><a class="headerlink" href="#insanities.web.wrappers.subdomain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="conf">
+<span id="id9"></span><h3>Conf<a class="headerlink" href="#conf" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.wrappers.Conf">
+<em class="property">class </em><tt class="descclassname">insanities.web.wrappers.</tt><tt class="descname">Conf</tt><big>(</big><em>ns</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#insanities.web.wrappers.Conf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Routing tools</a><ul>
+<li><a class="reference external" href="#module-insanities.web.core">Base classes</a><ul>
+<li><a class="reference external" href="#requesthandler">RequestHandler</a></li>
+<li><a class="reference external" href="#wrapper">Wrapper</a></li>
+<li><a class="reference external" href="#map">Map</a></li>
+<li><a class="reference external" href="#functionwrapper">FunctionWrapper</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#default-handlers">Default handlers</a><ul>
+<li><a class="reference external" href="#match">match</a></li>
+<li><a class="reference external" href="#method">method</a></li>
+<li><a class="reference external" href="#prefix">prefix</a></li>
+<li><a class="reference external" href="#subdomain">subdomain</a></li>
+<li><a class="reference external" href="#conf">Conf</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="sources/routing.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">insanities v0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Denis Otkidach.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
+    </div>
+  </body>
+</html>

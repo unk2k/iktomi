@@ -33,8 +33,8 @@ Web
 
 .. automodule:: insanities.web
 
-   * :ref:`http`
-   * :ref:`routing`
+   * :ref:`HTTP`
+   * :ref:`Routing <insanities-web-routing>`
    * :ref:`...`
 
 

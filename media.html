@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Forms API: Fields &mdash; insanities v0.5 documentation</title>
+    <title>Forms API: Media &mdash; insanities v0.5 documentation</title>
     <link rel="stylesheet" href="static/default.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -28,6 +28,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
         <li><a href="index.html">insanities v0.5 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -37,36 +40,67 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="forms-api-fields">
-<h1>Forms API: Fields<a class="headerlink" href="#forms-api-fields" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="forms-api-media">
+<h1>Forms API: Media<a class="headerlink" href="#forms-api-media" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 </ul>
 <ul class="simple">
-<li><a class="reference internal" href="#insanities-forms-widgets"><em>Module description</em></a></li>
-<li><a class="reference internal" href="#insanities-widget"><em>Widget</em></a></li>
-<li><a class="reference internal" href="#insanities-predefined-widgets"><em>Some predefined widgets</em></a></li>
+<li><a class="reference internal" href="#insanities-forms-media"><em>Module description</em></a></li>
+<li><a class="reference internal" href="#insanities-formmedia"><em>FormMedia</em></a></li>
+<li><a class="reference internal" href="#insanities-formmediaatom"><em>FormMediaAtom</em></a></li>
+<li><a class="reference internal" href="#insanities-formmediaatom-subclasses"><em>FormMediaAtom subclasses</em></a></li>
 </ul>
-<div class="section" id="module-description">
-<h2>Module Description<a class="headerlink" href="#module-description" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="widget">
-<span id="insanities-widget"></span><h3>Widget<a class="headerlink" href="#widget" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-insanities.forms.media">
+<h2>Module Description<a class="headerlink" href="#module-insanities.forms.media" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="formmedia">
+<span id="insanities-formmedia"></span><h3>FormMedia<a class="headerlink" href="#formmedia" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.forms.media.FormMedia">
+<em class="property">class </em><tt class="descclassname">insanities.forms.media.</tt><tt class="descname">FormMedia</tt><big>(</big><em>items=</em><span class="optional">[</span><span class="optional">]</span>, <em>env=None</em><big>)</big><a class="headerlink" href="#insanities.forms.media.FormMedia" title="Permalink to this definition">¶</a></dt>
+<dd>Instance encapsulating media items assigned to instances of
+<a title="insanities.forms.form.Form" class="reference external" href="forms.html#insanities.forms.form.Form"><tt class="xref docutils literal"><span class="pre">Form</span></tt></a>,
+<a title="insanities.forms.fields.Field" class="reference external" href="fields.html#insanities.forms.fields.Field"><tt class="xref docutils literal"><span class="pre">Field</span></tt></a> and
+<a title="insanities.forms.widgets.Widget" class="reference external" href="widgets.html#insanities.forms.widgets.Widget"><tt class="xref docutils literal"><span class="pre">Widget</span></tt></a></dd></dl>
+
 </div>
-<div class="section" id="select">
-<span id="insanities-select"></span><h3>Select<a class="headerlink" href="#select" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="formmediaatom">
+<span id="insanities-formmediaatom"></span><h3>FormMediaAtom<a class="headerlink" href="#formmediaatom" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.forms.media.FormMediaAtom">
+<em class="property">class </em><tt class="descclassname">insanities.forms.media.</tt><tt class="descname">FormMediaAtom</tt><big>(</big><em>data</em>, <em>holder=None</em><big>)</big><a class="headerlink" href="#insanities.forms.media.FormMediaAtom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Media item representing JS, CSS or some other media stuff linked to
+<a title="insanities.forms.form.Form" class="reference external" href="forms.html#insanities.forms.form.Form"><tt class="xref docutils literal"><span class="pre">Form</span></tt></a> or it&#8217;s parts.</p>
+<dl class="method">
+<dt id="insanities.forms.media.FormMediaAtom.render">
+<tt class="descname">render</tt><big>(</big><big>)</big><a class="headerlink" href="#insanities.forms.media.FormMediaAtom.render" title="Permalink to this definition">¶</a></dt>
+<dd>Renders media item to HTML</dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="groupedselect">
-<span id="insanities-groupedselect"></span><h3>GroupedSelect<a class="headerlink" href="#groupedselect" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="tinymce">
-<span id="insanities-tinymce"></span><h3>TinyMce<a class="headerlink" href="#tinymce" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="chardisplay">
-<span id="insanities-chardisplay"></span><h3>CharDisplay<a class="headerlink" href="#chardisplay" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="some-predefined-widgets">
-<span id="insanities-predefined-widgets"></span><h3>Some predefined widgets<a class="headerlink" href="#some-predefined-widgets" title="Permalink to this headline">¶</a></h3>
-<p>There are some <tt class="xref docutils literal"><span class="pre">Widget</span></tt> subclasses
-just defining their own templates and classnames.</p>
+<div class="section" id="formmediaatom-subclasses">
+<span id="insanities-formmediaatom-subclasses"></span><h3>FormMediaAtom subclasses<a class="headerlink" href="#formmediaatom-subclasses" title="Permalink to this headline">¶</a></h3>
+<p>There are some predefined <a title="insanities.forms.media.FormMediaAtom" class="reference internal" href="#insanities.forms.media.FormMediaAtom"><tt class="xref docutils literal"><span class="pre">FormMediaAtom</span></tt></a> subclasses:</p>
+<dl class="class">
+<dt id="insanities.forms.media.FormCSSRef">
+<em class="property">class </em><tt class="descclassname">insanities.forms.media.</tt><tt class="descname">FormCSSRef</tt><big>(</big><em>data</em>, <em>holder=None</em><big>)</big><a class="headerlink" href="#insanities.forms.media.FormCSSRef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="insanities.forms.media.FormCSSInline">
+<em class="property">class </em><tt class="descclassname">insanities.forms.media.</tt><tt class="descname">FormCSSInline</tt><big>(</big><em>data</em>, <em>holder=None</em><big>)</big><a class="headerlink" href="#insanities.forms.media.FormCSSInline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="insanities.forms.media.FormJSRef">
+<em class="property">class </em><tt class="descclassname">insanities.forms.media.</tt><tt class="descname">FormJSRef</tt><big>(</big><em>data</em>, <em>holder=None</em><big>)</big><a class="headerlink" href="#insanities.forms.media.FormJSRef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="insanities.forms.media.FormJSInline">
+<em class="property">class </em><tt class="descclassname">insanities.forms.media.</tt><tt class="descname">FormJSInline</tt><big>(</big><em>data</em>, <em>holder=None</em><big>)</big><a class="headerlink" href="#insanities.forms.media.FormJSInline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 </div>
 </div>
@@ -79,14 +113,11 @@ just defining their own templates and classnames.</p>
         <div class="sphinxsidebarwrapper">
             <h3><a href="index.html">Table Of Contents</a></h3>
             <ul>
-<li><a class="reference external" href="#">Forms API: Fields</a><ul>
-<li><a class="reference external" href="#module-description">Module Description</a><ul>
-<li><a class="reference external" href="#widget">Widget</a></li>
-<li><a class="reference external" href="#select">Select</a></li>
-<li><a class="reference external" href="#groupedselect">GroupedSelect</a></li>
-<li><a class="reference external" href="#tinymce">TinyMce</a></li>
-<li><a class="reference external" href="#chardisplay">CharDisplay</a></li>
-<li><a class="reference external" href="#some-predefined-widgets">Some predefined widgets</a></li>
+<li><a class="reference external" href="#">Forms API: Media</a><ul>
+<li><a class="reference external" href="#module-insanities.forms.media">Module Description</a><ul>
+<li><a class="reference external" href="#formmedia">FormMedia</a></li>
+<li><a class="reference external" href="#formmediaatom">FormMediaAtom</a></li>
+<li><a class="reference external" href="#formmediaatom-subclasses">FormMediaAtom subclasses</a></li>
 </ul>
 </li>
 </ul>
@@ -121,6 +152,9 @@ just defining their own templates and classnames.</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
         <li><a href="index.html">insanities v0.5 documentation</a> &raquo;</li> 
       </ul>
     </div>

@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Routing tools &mdash; insanities v0.5 documentation</title>
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '0.5',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="insanities v0.5 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li><a href="index.html">insanities v0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="routing-tools">
+<h1>Routing tools<a class="headerlink" href="#routing-tools" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+</ul>
+<ul class="simple">
+<li><a class="reference internal" href="#requestcontext"><em>RequestContext</em></a></li>
+<li><a class="reference internal" href="#request"><em>Request</em></a></li>
+<li><a class="reference internal" href="#httpexception"><em>HttpException</em></a></li>
+</ul>
+<div class="section" id="module-insanities.web.http">
+<span id="http"></span><h2>HTTP<a class="headerlink" href="#module-insanities.web.http" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="requestcontext">
+<span id="id2"></span><h3>RequestContext<a class="headerlink" href="#requestcontext" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.http.RequestContext">
+<em class="property">class </em><tt class="descclassname">insanities.web.http.</tt><tt class="descname">RequestContext</tt><big>(</big><em>wsgi_environ</em><big>)</big><a class="headerlink" href="#insanities.web.http.RequestContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context of the request. A class containing request and response objects and
+a number of data containers with request environment and processing data.</p>
+<dl class="classmethod">
+<dt id="insanities.web.http.RequestContext.blank">
+<em class="property">classmethod </em><tt class="descname">blank</tt><big>(</big><em>url</em>, <em>**data</em><big>)</big><a class="headerlink" href="#insanities.web.http.RequestContext.blank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method returning blank rctx. Very useful for testing</p>
+<p><cite>data</cite> - POST parameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="request">
+<span id="id3"></span><h3>Request<a class="headerlink" href="#request" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.http.Request">
+<em class="property">class </em><tt class="descclassname">insanities.web.http.</tt><tt class="descname">Request</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#insanities.web.http.Request" title="Permalink to this definition">¶</a></dt>
+<dd>Patched webob Request class</dd></dl>
+
+</div>
+<div class="section" id="httpexception">
+<span id="id4"></span><h3>HttpException<a class="headerlink" href="#httpexception" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.http.HttpException">
+<em class="property">class </em><tt class="descclassname">insanities.web.http.</tt><tt class="descname">HttpException</tt><big>(</big><em>status</em>, <em>url=None</em><big>)</big><a class="headerlink" href="#insanities.web.http.HttpException" title="Permalink to this definition">¶</a></dt>
+<dd>Exception forcing <tt class="xref docutils literal"><span class="pre">Map</span></tt> to generate
+<tt class="xref docutils literal"><span class="pre">Response</span></tt> with given status code and Location header (if provided)</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Routing tools</a><ul>
+<li><a class="reference external" href="#module-insanities.web.http">HTTP</a><ul>
+<li><a class="reference external" href="#requestcontext">RequestContext</a></li>
+<li><a class="reference external" href="#request">Request</a></li>
+<li><a class="reference external" href="#httpexception">HttpException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="sources/http.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">insanities v0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Denis Otkidach.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
+    </div>
+  </body>
+</html>

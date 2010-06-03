@@ -1,6 +1,7 @@
 # Sphinx inventory version 1
 # Project: insanities
 # Version: 0.5
+insanities.web.urlconvs mod urlconvs.html
 insanities.utils.html mod utils.html
 insanities.forms mod index.html
 insanities.forms.fields mod widgets.html
@@ -42,11 +43,12 @@ insanities.forms.widgets.ReadonlySelect class widgets.html
 insanities.web.core.RequestHandler class routing.html
 insanities.forms.fields.Field.fill method fields.html
 insanities.forms.convs.EnumChoice class convs.html
-insanities.web.core.Wrapper class routing.html
+insanities.utils.url.URL class utils.html
 insanities.utils.i18n.gettext_commands class i18n.html
 insanities.forms.fields.BaseField.input_name attribute fields.html
 insanities.forms.widgets.TextInput class widgets.html
 insanities.management.commands.server.command_debug method management.html
+insanities.web.urlconvs.String class urlconvs.html
 insanities.forms.fields.Field.conv attribute fields.html
 insanities.forms.convs.DisplayOnly class convs.html
 insanities.forms.widgets.CharDisplay.escape attribute widgets.html
@@ -57,6 +59,7 @@ insanities.utils.url.URL.getone method utils.html
 insanities.forms.perms.FieldPerm.check method perms.html
 insanities.web.core.RequestHandler.handle method routing.html
 insanities.forms.widgets.Widget.render method widgets.html
+insanities.web.urlconvs.Integer class urlconvs.html
 insanities.forms.fields.FieldSet class fields.html
 insanities.forms.fields.FieldList.template attribute fields.html
 insanities.forms.widgets.Widget.template attribute widgets.html
@@ -72,7 +75,7 @@ insanities.forms.form.Form class forms.html
 insanities.forms.convs.Converter.from_python method convs.html
 insanities.forms.form.Form.get_media method forms.html
 insanities.forms.convs.Converter.multiple attribute convs.html
-insanities.utils.url.URL.getall method utils.html
+insanities.utils.i18n.gettext_commands.command_compile method i18n.html
 insanities.forms.convs.Datetime class convs.html
 insanities.forms.convs.List class convs.html
 insanities.forms.widgets.TinyMce.compress attribute widgets.html
@@ -80,6 +83,7 @@ insanities.forms.perms.SimplePerm class perms.html
 insanities.forms.convs.DatetimeDisplay class convs.html
 insanities.management.commands.server class management.html
 insanities.forms.widgets.PasswordInput class widgets.html
+insanities.web.urlconvs.Converter.name attribute urlconvs.html
 insanities.management.commands.CommandDigest.description method management.html
 insanities.forms.fields.BaseField.label attribute fields.html
 insanities.forms.widgets.CharDisplay class widgets.html
@@ -91,6 +95,7 @@ insanities.forms.fields.Field.render method fields.html
 insanities.forms.media.FormCSSInline class media.html
 insanities.forms.convs.Time class convs.html
 insanities.forms.convs.Char.strip attribute convs.html
+insanities.web.urlconvs.Converter.to_python method urlconvs.html
 insanities.forms.widgets.TinyMce.cfg attribute widgets.html
 insanities.utils.i18n.set_lang class i18n.html
 insanities.forms.widgets.TinyMce class widgets.html
@@ -100,6 +105,7 @@ insanities.utils.i18n.gettext_commands.command_make method i18n.html
 insanities.forms.widgets.Select class widgets.html
 insanities.forms.widgets.Select.null_label attribute widgets.html
 insanities.forms.form.Form.render method forms.html
+insanities.web.urlconvs.Converter.to_url method urlconvs.html
 insanities.forms.widgets.Widget class widgets.html
 insanities.forms.fields.BaseField.parent attribute fields.html
 insanities.utils.i18n.gettext_commands.extract_messages method i18n.html
@@ -112,7 +118,6 @@ insanities.utils.i18n.gettext_support class i18n.html
 insanities.forms.media.FormMedia class media.html
 insanities.forms.convs.Html class convs.html
 insanities.forms.widgets.TinyMce.content_css attribute widgets.html
-insanities.utils.url.URL class utils.html
 insanities.forms.fields.FieldSet.template attribute fields.html
 insanities.management.commands.CommandDigest.default method management.html
 insanities.web.core.FunctionWrapper class routing.html
@@ -123,7 +128,6 @@ insanities.forms.fields.BaseField class fields.html
 insanities.web.wrappers.Conf class routing.html
 insanities.utils.url.URL.delete method utils.html
 insanities.management.commands.CommandDigest class management.html
-insanities.utils.i18n.gettext_commands.command_compile method i18n.html
 insanities.web.filters.match class routing.html
 insanities.forms.fields.BaseField.form attribute fields.html
 insanities.web.core.Wrapper.exec_wrapped method routing.html
@@ -142,6 +146,8 @@ insanities.forms.convs.Int.min attribute convs.html
 insanities.forms.form.Form.get_field method forms.html
 insanities.forms.widgets.GroupedSelect class widgets.html
 insanities.utils.url.URL.get_readable method utils.html
+insanities.web.core.Wrapper class routing.html
+insanities.web.urlconvs.Converter class urlconvs.html
 insanities.web.http.Request class http.html
 insanities.web.core.Map class routing.html
 insanities.forms.fields.Field.get_media method fields.html
@@ -150,13 +156,15 @@ insanities.management.manage function management.html
 insanities.forms.widgets.Textarea class widgets.html
 insanities.forms.fields.BaseField.classname attribute fields.html
 insanities.management.commands.server.command_serve method management.html
-insanities.forms.widgets.Widget.media attribute widgets.html
+insanities.utils.url.URL.getall method utils.html
 insanities.forms.convs.Converter.null attribute convs.html
 insanities.forms.fields.BaseField.id attribute fields.html
 insanities.forms.media.FormJSRef class media.html
 insanities.forms.widgets.ImageView class widgets.html
+insanities.forms.widgets.Widget.media attribute widgets.html
 insanities.forms.widgets.CharDisplay.getter attribute widgets.html
 insanities.forms.fields.BaseField.value attribute fields.html
+insanities.web.urlconvs.Boolean class urlconvs.html
 insanities.forms.widgets.Widget.classname attribute widgets.html
 insanities.forms.fields.BaseField.permissions attribute fields.html
 insanities.utils.html.Sanitizer class utils.html

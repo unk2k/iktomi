@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Internationalization &mdash; insanities v0.5 documentation</title>
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '0.5',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="insanities v0.5 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li><a href="index.html">insanities v0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="internationalization">
+<h1>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+</ul>
+<ul class="simple">
+<li><a class="reference internal" href="#insanities-i18n"><em>Description</em></a></li>
+<li><a class="reference internal" href="#insanities-n-m"><em>Marking strings to be translated</em></a></li>
+<li><a class="reference internal" href="#insanities-i18n-support"><em>I18n support handlers</em></a></li>
+<li><a class="reference internal" href="#insanities-set-lang"><em>set_lang handler</em></a></li>
+<li><a class="reference internal" href="#insanities-gettext-commands"><em>Gettext commands</em></a></li>
+<li><a class="reference internal" href="#insanities-forms-i18n"><em>Integration with forms </em></a></li>
+<li><em class="xref">Defining own i18n handlers</em></li>
+</ul>
+<div class="section" id="module-insanities.utils.i18n">
+<h2>Description<a class="headerlink" href="#module-insanities.utils.i18n" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="marking-strings-as-safe">
+<span id="insanities-n-m"></span><h3>Marking strings as safe<a class="headerlink" href="#marking-strings-as-safe" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="insanities.utils.N_">
+<tt class="descclassname">insanities.utils.</tt><tt class="descname">N_</tt><big>(</big><em>msg</em><big>)</big><a class="headerlink" href="#insanities.utils.N_" title="Permalink to this definition">¶</a></dt>
+<dd>Single translatable string marker</dd></dl>
+
+<dl class="class">
+<dt id="insanities.utils.M_">
+<em class="property">class </em><tt class="descclassname">insanities.utils.</tt><tt class="descname">M_</tt><a class="headerlink" href="#insanities.utils.M_" title="Permalink to this definition">¶</a></dt>
+<dd>Marker for translatable string with plural form</dd></dl>
+
+</div>
+<div class="section" id="internationalization-support-request-handlers">
+<span id="insanities-i18n-support"></span><h3>Internationalization support request handlers<a class="headerlink" href="#internationalization-support-request-handlers" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.utils.i18n.gettext_support">
+<em class="property">class </em><tt class="descclassname">insanities.utils.i18n.</tt><tt class="descname">gettext_support</tt><big>(</big><em>localepath</em>, <em>default_language=None</em>, <em>languages=None</em>, <em>domain='insanities'</em>, <em>load_from_cookie=None</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_support" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request handler addding support of i18n</p>
+<p>:<em>default_language</em> - language used by default, it is activated by
+this handler in <tt class="xref docutils literal"><span class="pre">handle()</span></tt> method. If not passed to the constructor,
+used first item from <tt class="xref docutils literal"><span class="pre">languages</span></tt> attribute. At least
+<tt class="xref docutils literal"><span class="pre">default_language</span></tt> or <tt class="xref docutils literal"><span class="pre">langages</span></tt> must be specified.</p>
+<p>:<em>languages</em> - languages (&#8220;en&#8221;, &#8220;ru&#8221;) or locales (&#8220;en_GB&#8221;, &#8220;ru_RU&#8221;) code.
+If provided, only given language can be activated.
+If there is no <tt class="xref docutils literal"><span class="pre">default_language</span></tt> provided, first language is default.</p>
+<p>:<em>localepath</em> - a path to locale directory containing .mo file.</p>
+<p>:<em>domain</em> - gettext domain of translation.</p>
+<p>:<em>load_from_cookie</em> - http cookie name. If provided, <tt class="xref docutils literal"><span class="pre">handle()</span></tt> method
+activates language from this cookie with fallback to <tt class="xref docutils literal"><span class="pre">default_cookie</span></tt>.</p>
+<dl class="method">
+<dt id="insanities.utils.i18n.gettext_support.get_translation">
+<tt class="descname">get_translation</tt><big>(</big><em>language</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_support.get_translation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a translation object.</p>
+<p>Adds a fallback to language without locale, if a language is particular
+locale and has not translation.</p>
+<p>Adds a fallback to the default language, if it&#8217;s
+different from the requested language.</p>
+<p>:<em>language</em> - language (&#8220;en&#8221;, &#8220;ru&#8221;) or locale (&#8220;en_GB&#8221;, &#8220;ru_RU&#8221;) code.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="set-lang-handler">
+<span id="insanities-set-lang"></span><h3>set_lang handler<a class="headerlink" href="#set-lang-handler" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.utils.i18n.set_lang">
+<em class="property">class </em><tt class="descclassname">insanities.utils.i18n.</tt><tt class="descname">set_lang</tt><big>(</big><em>language</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.set_lang" title="Permalink to this definition">¶</a></dt>
+<dd><p>usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Map</span><span class="p">(</span>
+    <span class="n">subdomain</span><span class="p">(</span><span class="s">&#39;ru&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">set_lang</span><span class="p">(</span><span class="s">&#39;ru_RU&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">subdomain</span><span class="p">(</span><span class="s">&#39;en&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">set_lang</span><span class="p">(</span><span class="s">&#39;en_US&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="o">...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="gettext-commands">
+<span id="insanities-gettext-commands"></span><h3>Gettext commands<a class="headerlink" href="#gettext-commands" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.utils.i18n.gettext_commands">
+<em class="property">class </em><tt class="descclassname">insanities.utils.i18n.</tt><tt class="descname">gettext_commands</tt><big>(</big><em>localedir=None</em>, <em>searchdir=None</em>, <em>modir=None</em>, <em>domain='insanities'</em>, <em>extensions=('html'</em>, <em>)</em>, <em>ignore=</em><span class="optional">[</span><span class="optional">]</span>, <em>pofiles=None</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Command used for making .po files and compiling .mo files.</p>
+<dl class="method">
+<dt id="insanities.utils.i18n.gettext_commands.command_compile">
+<tt class="descname">command_compile</tt><big>(</big><em>locale=None</em>, <em>domain=None</em>, <em>dbg=False</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands.command_compile" title="Permalink to this definition">¶</a></dt>
+<dd><p>compile
+locale        Compiles the message files only for the given locale.
+domain        Set if you want to write output .mo file to nan-default domain
+dbg           Set if you want to debug .po file wil be outputted</p>
+<blockquote>
+to LC_MESSAGES/_dbg.po.</blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="insanities.utils.i18n.gettext_commands.command_make">
+<tt class="descname">command_make</tt><big>(</big><em>locale=None</em>, <em>domain=None</em>, <em>verbosity='1'</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands.command_make" title="Permalink to this definition">¶</a></dt>
+<dd>make
+locale        Creates or updates the message files only for the given locale (e.g. pt_BR).
+verbosity     Verbosity.
+domain        Set if you want to write output .po file to nan-default domain</dd></dl>
+
+<dl class="method">
+<dt id="insanities.utils.i18n.gettext_commands.find_files">
+<tt class="descname">find_files</tt><big>(</big><em>root</em>, <em>ignore_patterns</em>, <em>verbosity</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands.find_files" title="Permalink to this definition">¶</a></dt>
+<dd>Helper function to get all files in the given root.</dd></dl>
+
+<dl class="method">
+<dt id="insanities.utils.i18n.gettext_commands.is_ignored">
+<tt class="descname">is_ignored</tt><big>(</big><em>path</em>, <em>ignore_patterns</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands.is_ignored" title="Permalink to this definition">¶</a></dt>
+<dd>Helper function to check if the given path should be ignored or not.</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="integration-with-forms">
+<span id="insanities-forms-i18n"></span><h3>Integration with forms<a class="headerlink" href="#integration-with-forms" title="Permalink to this headline">¶</a></h3>
+<p>The internationalization module is integrated with forms using <tt class="xref docutils literal"><span class="pre">FormEnvironment</span> </tt> class&#8217;s <tt class="xref docutils literal"><span class="pre">gettext</span></tt> and <tt class="xref docutils literal"><span class="pre">ngettext</span></tt> methods. These methods can be redefined in subclasses to customize initialization.</p>
+<p>By default, internationalization is used by <a title="insanities.forms.convs.Converter" class="reference external" href="convs.html#insanities.forms.convs.Converter"><tt class="xref docutils literal"><span class="pre">Converters'</span></tt></a> error method. This method accepts name of the error, looks up it&#8217;s message in converters&#8217; error_%(name)s attribute and translates the message.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Internationalization</a><ul>
+<li><a class="reference external" href="#module-insanities.utils.i18n">Description</a><ul>
+<li><a class="reference external" href="#marking-strings-as-safe">Marking strings as safe</a></li>
+<li><a class="reference external" href="#internationalization-support-request-handlers">Internationalization support request handlers</a></li>
+<li><a class="reference external" href="#set-lang-handler">set_lang handler</a></li>
+<li><a class="reference external" href="#gettext-commands">Gettext commands</a></li>
+<li><a class="reference external" href="#integration-with-forms">Integration with forms</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="sources/i18n.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">insanities v0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Denis Otkidach.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
+    </div>
+  </body>
+</html>

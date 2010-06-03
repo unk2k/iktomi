@@ -64,7 +64,7 @@
 
 <dl class="class">
 <dt id="insanities.utils.M_">
-<em class="property">class </em><tt class="descclassname">insanities.utils.</tt><tt class="descname">M_</tt><a class="headerlink" href="#insanities.utils.M_" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">insanities.utils.</tt><tt class="descname">M_</tt><big>(</big><em>single</em>, <em>plural</em><big>)</big><a class="headerlink" href="#insanities.utils.M_" title="Permalink to this definition">¶</a></dt>
 <dd>Marker for translatable string with plural form</dd></dl>
 
 </div>
@@ -74,16 +74,16 @@
 <dt id="insanities.utils.i18n.gettext_support">
 <em class="property">class </em><tt class="descclassname">insanities.utils.i18n.</tt><tt class="descname">gettext_support</tt><big>(</big><em>localepath</em>, <em>default_language=None</em>, <em>languages=None</em>, <em>domain='insanities'</em>, <em>load_from_cookie=None</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_support" title="Permalink to this definition">¶</a></dt>
 <dd><p>Request handler addding support of i18n</p>
-<p>:<em>default_language</em> - language used by default, it is activated by
+<p><em>default_language</em> - language used by default, it is activated by
 this handler in <tt class="xref docutils literal"><span class="pre">handle()</span></tt> method. If not passed to the constructor,
 used first item from <tt class="xref docutils literal"><span class="pre">languages</span></tt> attribute. At least
 <tt class="xref docutils literal"><span class="pre">default_language</span></tt> or <tt class="xref docutils literal"><span class="pre">langages</span></tt> must be specified.</p>
-<p>:<em>languages</em> - languages (&#8220;en&#8221;, &#8220;ru&#8221;) or locales (&#8220;en_GB&#8221;, &#8220;ru_RU&#8221;) code.
+<p><em>languages</em> - languages (&#8220;en&#8221;, &#8220;ru&#8221;) or locales (&#8220;en_GB&#8221;, &#8220;ru_RU&#8221;) code.
 If provided, only given language can be activated.
 If there is no <tt class="xref docutils literal"><span class="pre">default_language</span></tt> provided, first language is default.</p>
-<p>:<em>localepath</em> - a path to locale directory containing .mo file.</p>
-<p>:<em>domain</em> - gettext domain of translation.</p>
-<p>:<em>load_from_cookie</em> - http cookie name. If provided, <tt class="xref docutils literal"><span class="pre">handle()</span></tt> method
+<p><em>localepath</em> - a path to locale directory containing .mo file.</p>
+<p><em>domain</em> - gettext domain of translation.</p>
+<p><em>load_from_cookie</em> - http cookie name. If provided, <tt class="xref docutils literal"><span class="pre">handle()</span></tt> method
 activates language from this cookie with fallback to <tt class="xref docutils literal"><span class="pre">default_cookie</span></tt>.</p>
 <dl class="method">
 <dt id="insanities.utils.i18n.gettext_support.get_translation">
@@ -93,7 +93,7 @@ activates language from this cookie with fallback to <tt class="xref docutils li
 locale and has not translation.</p>
 <p>Adds a fallback to the default language, if it&#8217;s
 different from the requested language.</p>
-<p>:<em>language</em> - language (&#8220;en&#8221;, &#8220;ru&#8221;) or locale (&#8220;en_GB&#8221;, &#8220;ru_RU&#8221;) code.</p>
+<p><em>language</em> - language (&#8220;en&#8221;, &#8220;ru&#8221;) or locale (&#8220;en_GB&#8221;, &#8220;ru_RU&#8221;) code.</p>
 </dd></dl>
 
 </dd></dl>
@@ -155,7 +155,7 @@ domain        Set if you want to write output .po file to nan-default domain</dd
 <div class="section" id="integration-with-forms">
 <span id="insanities-forms-i18n"></span><h3>Integration with forms<a class="headerlink" href="#integration-with-forms" title="Permalink to this headline">¶</a></h3>
 <p>The internationalization module is integrated with forms using <tt class="xref docutils literal"><span class="pre">FormEnvironment</span> </tt> class&#8217;s <tt class="xref docutils literal"><span class="pre">gettext</span></tt> and <tt class="xref docutils literal"><span class="pre">ngettext</span></tt> methods. These methods can be redefined in subclasses to customize initialization.</p>
-<p>By default, internationalization is used by <a title="insanities.forms.convs.Converter" class="reference external" href="convs.html#insanities.forms.convs.Converter"><tt class="xref docutils literal"><span class="pre">Converters'</span></tt></a> error method. This method accepts name of the error, looks up it&#8217;s message in converters&#8217; error_%(name)s attribute and translates the message.</p>
+<p>By default, internationalization is used by <a title="insanities.forms.convs.Converter" class="reference external" href="convs.html#insanities.forms.convs.Converter"><tt class="xref docutils literal"><span class="pre">Converter</span></tt></a> <tt class="xref docutils literal"><span class="pre">error</span></tt> method. This method accepts name of the error, looks up it&#8217;s message in converters&#8217; error_%(name)s attribute and translates the message.</p>
 </div>
 </div>
 </div>

@@ -121,33 +121,44 @@ different from the requested language.</p>
 <em class="property">class </em><tt class="descclassname">insanities.utils.i18n.</tt><tt class="descname">gettext_commands</tt><big>(</big><em>localedir=None</em>, <em>searchdir=None</em>, <em>modir=None</em>, <em>domain='insanities'</em>, <em>extensions=('html'</em>, <em>)</em>, <em>ignore=</em><span class="optional">[</span><span class="optional">]</span>, <em>pofiles=None</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands" title="Permalink to this definition">¶</a></dt>
 <dd><p>Command used for making .po files and compiling .mo files.</p>
 <dl class="method">
-<dt id="insanities.utils.i18n.gettext_commands.command_compile">
-<tt class="descname">command_compile</tt><big>(</big><em>locale=None</em>, <em>domain=None</em>, <em>dbg=False</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands.command_compile" title="Permalink to this definition">¶</a></dt>
-<dd><p>compile
-locale        Compiles the message files only for the given locale.
-domain        Set if you want to write output .mo file to nan-default domain
-dbg           Set if you want to debug .po file wil be outputted</p>
+<dt id="insanities.utils.i18n.gettext_commands.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>localedir=None</em>, <em>searchdir=None</em>, <em>modir=None</em>, <em>domain='insanities'</em>, <em>extensions=('html'</em>, <em>)</em>, <em>ignore=</em><span class="optional">[</span><span class="optional">]</span>, <em>pofiles=None</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>localedir</em>     Directory containig locale files
+<em>searchdir</em>     Directory containig source code files
+<em>domain</em>        The domain of the message files (default: &#8220;insanities&#8221;).
+<em>extensions</em>    The file extension(s) to examine (default: &#8220;.html&#8221;,</p>
 <blockquote>
-to LC_MESSAGES/_dbg.po.</blockquote>
+separate multiple extensions with commas).</blockquote>
+<p><em>ignore</em>        Ignore files or directories matching this glob-style pattern.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="insanities.utils.i18n.gettext_commands.command_make">
 <tt class="descname">command_make</tt><big>(</big><em>locale=None</em>, <em>domain=None</em>, <em>verbosity='1'</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands.command_make" title="Permalink to this definition">¶</a></dt>
-<dd>make
-locale        Creates or updates the message files only for the given locale (e.g. pt_BR).
-verbosity     Verbosity.
-domain        Set if you want to write output .po file to nan-default domain</dd></dl>
+<dd><p>make</p>
+<ul class="simple">
+<li>locale        Creates or updates the message files only for the given locale (e.g. pt_BR).</li>
+<li>verbosity     Verbosity.</li>
+<li>domain        Set if you want to write output .po file to nan-default domain</li>
+</ul>
+</dd></dl>
 
 <dl class="method">
-<dt id="insanities.utils.i18n.gettext_commands.find_files">
-<tt class="descname">find_files</tt><big>(</big><em>root</em>, <em>ignore_patterns</em>, <em>verbosity</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands.find_files" title="Permalink to this definition">¶</a></dt>
-<dd>Helper function to get all files in the given root.</dd></dl>
+<dt id="insanities.utils.i18n.gettext_commands.command_compile">
+<tt class="descname">command_compile</tt><big>(</big><em>locale=None</em>, <em>domain=None</em>, <em>dbg=False</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands.command_compile" title="Permalink to this definition">¶</a></dt>
+<dd><p>compile</p>
+<ul class="simple">
+<li>locale        Compiles the message files only for the given locale.</li>
+<li>domain        Set if you want to write output .mo file to nan-default domain</li>
+<li>dbg           Set if you want to debug .po file wil be outputted to LC_MESSAGES/_dbg.po.</li>
+</ul>
+</dd></dl>
 
 <dl class="method">
-<dt id="insanities.utils.i18n.gettext_commands.is_ignored">
-<tt class="descname">is_ignored</tt><big>(</big><em>path</em>, <em>ignore_patterns</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands.is_ignored" title="Permalink to this definition">¶</a></dt>
-<dd>Helper function to check if the given path should be ignored or not.</dd></dl>
+<dt id="insanities.utils.i18n.gettext_commands.extract_messages">
+<tt class="descname">extract_messages</tt><big>(</big><em>domain</em>, <em>dirpath</em>, <em>file</em>, <em>header=True</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_commands.extract_messages" title="Permalink to this definition">¶</a></dt>
+<dd>Currently not properly implemented, so it considered
+to be overriden in subclasses.</dd></dl>
 
 </dd></dl>
 
@@ -155,7 +166,7 @@ domain        Set if you want to write output .po file to nan-default domain</dd
 <div class="section" id="integration-with-forms">
 <span id="insanities-forms-i18n"></span><h3>Integration with forms<a class="headerlink" href="#integration-with-forms" title="Permalink to this headline">¶</a></h3>
 <p>The internationalization module is integrated with forms using <tt class="xref docutils literal"><span class="pre">FormEnvironment</span> </tt> class&#8217;s <tt class="xref docutils literal"><span class="pre">gettext</span></tt> and <tt class="xref docutils literal"><span class="pre">ngettext</span></tt> methods. These methods can be redefined in subclasses to customize initialization.</p>
-<p>By default, internationalization is used by <a title="insanities.forms.convs.Converter" class="reference external" href="convs.html#insanities.forms.convs.Converter"><tt class="xref docutils literal"><span class="pre">Converter</span></tt></a> <tt class="xref docutils literal"><span class="pre">error</span></tt> method. This method accepts name of the error, looks up it&#8217;s message in converters&#8217; error_%(name)s attribute and translates the message.</p>
+<p>By default, internationalization is used by <a title="insanities.forms.convs.Converter" class="reference external" href="convs.html#insanities.forms.convs.Converter"><tt class="xref docutils literal"><span class="pre">Converter</span></tt></a> <a title="insanities.forms.convs.Converter.error" class="reference external" href="convs.html#insanities.forms.convs.Converter.error"><tt class="xref docutils literal"><span class="pre">error</span></tt></a> method. This method accepts name of the error, looks up it&#8217;s message in converters&#8217; error_%(name)s attribute and translates the message.</p>
 </div>
 </div>
 </div>

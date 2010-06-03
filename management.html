@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Management &mdash; insanities v0.5 documentation</title>
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '0.5',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="insanities v0.5 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li><a href="index.html">insanities v0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="management">
+<h1>Management<a class="headerlink" href="#management" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+</ul>
+<ul class="simple">
+<li><a class="reference internal" href="#insanities-management"><em>Module description</em></a></li>
+<li><a class="reference internal" href="#insanities-manage"><em>manage function</em></a></li>
+<li><a class="reference internal" href="#insanities-commanddigest"><em>CommandDigest</em></a></li>
+<li><a class="reference internal" href="#insanities-provided-commands"><em>Provided commands</em></a></li>
+</ul>
+<div class="section" id="module-insanities.management">
+<h2>Description<a class="headerlink" href="#module-insanities.management" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="manage-function">
+<span id="insanities-manage"></span><h3>manage function<a class="headerlink" href="#manage-function" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="insanities.management.manage">
+<tt class="descclassname">insanities.management.</tt><tt class="descname">manage</tt><big>(</big><em>commands</em><big>)</big><a class="headerlink" href="#insanities.management.manage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses argv and runs neccessary command. Is to be used in manage.py file.</p>
+<p>Accept a dict with digest name as keys and instances of
+<a title="insanities.management.commands.CommandDigest" class="reference internal" href="#insanities.management.commands.CommandDigest"><tt class="xref docutils literal"><span class="pre">CommandDigest</span></tt></a>
+objects as values.</p>
+<p>The format of command is the following:</p>
+<div class="highlight-python"><pre>./manage.py digest_name:command_name[ arg1[ arg2[...]]][ key1=kwarg1[...]]</pre>
+</div>
+<p>where command_name is a part of digest instance method name, args and kwargs
+are passed to the method. For details, see
+<a title="insanities.management.commands.CommandDigest" class="reference internal" href="#insanities.management.commands.CommandDigest"><tt class="xref docutils literal"><span class="pre">CommandDigest</span></tt></a> docs.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="commanddigest">
+<span id="insanities-commanddigest"></span><h3>CommandDigest<a class="headerlink" href="#commanddigest" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.management.commands.CommandDigest">
+<em class="property">class </em><tt class="descclassname">insanities.management.commands.</tt><tt class="descname">CommandDigest</tt><a class="headerlink" href="#insanities.management.commands.CommandDigest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="insanities.management.commands.CommandDigest.default">
+<tt class="descname">default</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#insanities.management.commands.CommandDigest.default" title="Permalink to this definition">¶</a></dt>
+<dd>This method will be called if command_name in __call__ is None</dd></dl>
+
+<dl class="method">
+<dt id="insanities.management.commands.CommandDigest.description">
+<tt class="descname">description</tt><big>(</big><big>)</big><a class="headerlink" href="#insanities.management.commands.CommandDigest.description" title="Permalink to this definition">¶</a></dt>
+<dd>Description outputed to console</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="provided-commands">
+<span id="insanities-provided-commands"></span><h2>Provided commands<a class="headerlink" href="#provided-commands" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="server">
+<span id="insanities-server"></span><h3>server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.management.commands.server">
+<em class="property">class </em><tt class="descclassname">insanities.management.commands.</tt><tt class="descname">server</tt><big>(</big><em>app</em><big>)</big><a class="headerlink" href="#insanities.management.commands.server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Development server:</p>
+<blockquote>
+$ python manage.py server:serve</blockquote>
+<dl class="method">
+<dt id="insanities.management.commands.server.command_debug">
+<tt class="descname">command_debug</tt><big>(</big><em>url</em><big>)</big><a class="headerlink" href="#insanities.management.commands.server.command_debug" title="Permalink to this definition">¶</a></dt>
+<dd>python manage.py server:debug url</dd></dl>
+
+<dl class="method">
+<dt id="insanities.management.commands.server.command_serve">
+<tt class="descname">command_serve</tt><big>(</big><em>host=''</em>, <em>port='8000'</em><big>)</big><a class="headerlink" href="#insanities.management.commands.server.command_serve" title="Permalink to this definition">¶</a></dt>
+<dd>python manage.py server:serve [host] [port]</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="other-commands">
+<h3>Other commands<a class="headerlink" href="#other-commands" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><em class="xref">sqla</em></li>
+<li><em class="xref">sqlo</em></li>
+<li><a class="reference external" href="i18n.html#insanities-gettext-commands"><em>gettext</em></a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Management</a><ul>
+<li><a class="reference external" href="#module-insanities.management">Description</a><ul>
+<li><a class="reference external" href="#manage-function">manage function</a></li>
+<li><a class="reference external" href="#commanddigest">CommandDigest</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#provided-commands">Provided commands</a><ul>
+<li><a class="reference external" href="#server">server</a></li>
+<li><a class="reference external" href="#other-commands">Other commands</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="sources/management.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">insanities v0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Denis Otkidach.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
+    </div>
+  </body>
+</html>

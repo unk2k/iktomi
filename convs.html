@@ -78,6 +78,30 @@ that converts it to integer</p>
            error_min_length='At least %(min_length)s characters required')`</pre>
 </div>
 <dl class="method">
+<dt id="insanities.forms.convs.Converter.error">
+<tt class="descname">error</tt><big>(</big><em>error_type</em>, <em>count=None</em><big>)</big><a class="headerlink" href="#insanities.forms.convs.Converter.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises <tt class="xref docutils literal"><span class="pre">ValidationError</span></tt> with the
+message taken from converter&#8217;s error_%(error_type) method and formatted with
+converters&#8217; attributes as arguments.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Conv</span><span class="p">(</span><span class="n">Converter</span><span class="p">):</span>
+    <span class="n">bars</span> <span class="o">=</span> <span class="n">BARS</span>
+
+    <span class="n">error_foo</span> <span class="o">=</span> <span class="n">N_</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
+    <span class="n">error_bar</span> <span class="o">=</span> <span class="n">M_</span><span class="p">(</span><span class="s">&#39;you need one bar&#39;</span><span class="p">,</span> 
+                   <span class="s">&#39;you need %(bars) bars&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">footest</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bartest</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bars</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BARS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="insanities.forms.convs.Converter.from_python">
 <tt class="descname">from_python</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#insanities.forms.convs.Converter.from_python" title="Permalink to this definition">¶</a></dt>
 <dd>custom converters should override this</dd></dl>

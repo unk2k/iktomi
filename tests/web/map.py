@@ -266,15 +266,16 @@ class MapReverse(unittest.TestCase):
         ch2 = w1 | w3
 
         wc1 = ch1 | r1 | w3 | r2
+        wc2 = r1 | r2 | r3
 
         def _run(chain, result):
-            print chain
             rctx = RequestContext.blank('')
             rctx = chain(rctx)
-            self.assertEqual(rctx.log, result) # got '123'. wtf?
+            self.assertEqual(rctx.log, result)
 
         # XXX write correct tests
         _run(ch1, '12')
         _run(ch2, '13')
         _run(wc1, '12a3byx')
+        _run(wc2, 'abczyx')
 

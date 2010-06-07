@@ -35,11 +35,10 @@ class RequestHandler(object):
 
     def __or__(self, next):
         next = prepare_handler(next)
-        this = prepare_handler(self)
         if isinstance(next, Chain):
-            handlers = [this] + next.handlers
+            handlers = [self] + next.handlers
         else:
-            handlers = [this, next]
+            handlers = [self, next]
         return Chain(handlers)
 
     def __call__(self, rctx):
@@ -138,8 +137,11 @@ class Wrapper(RequestHandler):
         logger.debug("Wrapper end %r" % self)
         return rctx
 
+    def __or__(self, next):
+        return ChainWrapper(self, next)
+
     def __repr__(self):
-        return '%s() | %r' % (self.__class__.__name__, self._next_handler)
+        return '%s()' % (self.__class__.__name__)
 
 
 class Reverse(object):

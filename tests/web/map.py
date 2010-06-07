@@ -5,7 +5,7 @@ import sys
 import os
 FRAMEWORK_DIR = os.path.abspath('../..')
 sys.path.append(FRAMEWORK_DIR)
-from insanities.web.core import Map, RequestHandler, Reverse
+from insanities.web.core import Map, RequestHandler, Reverse, Wrapper
 from insanities.web.filters import *
 from insanities.web.wrappers import *
 from insanities.web.http import RequestContext
@@ -244,21 +244,37 @@ class MapReverse(unittest.TestCase):
 
         class Write(RequestHandler):
             def __init__(self, letter):
-                RequestHandler.__init__(self)
                 self.letter = letter
             def handle(self, rctx):
                 rctx.log = getattr(rctx, 'log', '') + self.letter
                 return rctx
 
+        class WriteWr(Wrapper):
+            def __init__(self, letter, letter2):
+                self.letter = letter
+                self.letter2 = letter2
+            def handle(self, rctx, wrapped):
+                rctx.log = getattr(rctx, 'log', '') + self.letter
+                wrapped(rctx)
+                rctx.log = getattr(rctx, 'log', '') + self.letter2
+                return rctx
+
         w1, w2, w3 = Write('1'), Write('2'), Write('3')
+        r1, r2, r3 = WriteWr('a', 'x'), WriteWr('b', 'y'), WriteWr('c', 'z')
 
         ch1 = w1 | w2
-        ch2 = w1 | w3 # this chain has side-effect!
+        ch2 = w1 | w3
 
-        rctx = RequestContext.blank('')
-        rctx = ch1(rctx)
-        self.assertEqual(rctx.log, '12') # got '123'. wtf?
+        wc1 = ch1 | r1 | w3 | r2
 
-        rctx = RequestContext.blank('')
-        ch2(rctx)
-        self.assertEqual(rctx.log, '13')
+        def _run(chain, result):
+            print chain
+            rctx = RequestContext.blank('')
+            rctx = chain(rctx)
+            self.assertEqual(rctx.log, result) # got '123'. wtf?
+
+        # XXX write correct tests
+        _run(ch1, '12')
+        _run(ch2, '13')
+        _run(wc1, '12a3byx')
+

@@ -34,9 +34,10 @@ class MapInit(unittest.TestCase):
         )
         self.assert_(len(app.handlers) == 1)
         first_item = app.handlers[0]
-        self.assert_(isinstance(first_item._next_handler, RequestHandler))
-        self.assert_(first_item._next_handler.func is handler1)
-        self.assert_(first_item._next_handler._next_handler.func is handler2)
+        for h in first_item.handlers:
+            self.assert_(isinstance(h, RequestHandler))
+        self.assert_(first_item.handlers[1].func is handler1)
+        self.assert_(first_item.handlers[2].func is handler2)
 
     def test_usual_request_handlers(self):
         rh1 = RequestHandler()
@@ -46,8 +47,8 @@ class MapInit(unittest.TestCase):
         )
         self.assert_(len(app.handlers) == 1)
         first_item = app.handlers[0]
-        self.assert_(first_item is rh1)
-        self.assert_(first_item._next_handler is rh2)
+        self.assert_(first_item.handlers[0] is rh1)
+        self.assert_(first_item.handlers[1] is rh2)
 
     def test_function_argspec(self):
         'ARGSPEC'

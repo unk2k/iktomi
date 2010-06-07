@@ -22,7 +22,6 @@ def process_http_exception(rctx, e):
 
 
 class WSGIHandler(object):
-
     def __init__(self, app):
         self.app = app
 

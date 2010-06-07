@@ -16,9 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class prefix(Wrapper):
-
     def __init__(self, _prefix):
-        super(prefix, self).__init__()
         self.builder = UrlTemplate(_prefix, match_whole_str=False)
 
     def trace(self, tracer):
@@ -38,9 +36,7 @@ class prefix(Wrapper):
 
 
 class subdomain(Wrapper):
-
     def __init__(self, _subdomain):
-        super(subdomain, self).__init__()
         self.subdomain = unicode(_subdomain)
 
     def trace(self, tracer):
@@ -70,9 +66,7 @@ class subdomain(Wrapper):
 
 
 class Conf(Wrapper):
-
     def __init__(self, ns, **kwargs):
-        super(Conf, self).__init__()
         # namespace is str, may be empty for default namespace
         self.namespace = ns
         self.conf = kwargs

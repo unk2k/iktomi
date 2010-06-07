@@ -15,9 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class match(RequestHandler):
-
     def __init__(self, url, name, converters=None):
-        super(match,self).__init__()
         self.url = url
         self.url_name = name
         self.builder = UrlTemplate(url)
@@ -39,9 +37,7 @@ class match(RequestHandler):
 
 
 class method(RequestHandler):
-
     def __init__(self, *names):
-        super(method, self).__init__()
         self._names = [name.upper() for name in names]
 
     def handle(self, rctx):
@@ -61,7 +57,6 @@ class ctype(RequestHandler):
     xhtml = 'application/xhtml+xml'
 
     def __init__(self, *types):
-        super(ctype, self).__init__()
         self._types = types
 
     def handle(self, rctx):

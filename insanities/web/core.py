@@ -23,15 +23,15 @@ def prepare_handler(handler):
     return handler
 
 
-
 class STOP(object): pass
 
 
 class RequestHandler(object):
     '''Base class for all request handlers.'''
-
-    def __init__(self):
-        self._next_handler = None
+    def handle(self, rctx):
+        '''This method should be overridden in subclasses.
+        It always takes rctx object as only argument and returns it'''
+        return rctx
 
     def __or__(self, next):
         next = prepare_handler(next)
@@ -44,14 +44,6 @@ class RequestHandler(object):
     def __call__(self, rctx):
         return self.handle(rctx)
 
-    def handle(self, rctx):
-        '''This method should be overridden in subclasses.
-        It always takes rctx object as only argument and returns it'''
-        return rctx
-
-    def next(self):
-        return self._next_handler
-
     def trace(self, tracer):
         pass
 
@@ -60,13 +52,11 @@ class RequestHandler(object):
 
 
 class Chain(RequestHandler):
-
     def __init__(self, handlers):
         self.handlers = handlers
 
     def __or__(self, next):
         next = prepare_handler(next)
-
         last = self.handlers[-1]
         if isinstance(last, ChainWrapper):
             handlers = self.handlers[:-1] + [last | next]
@@ -89,19 +79,17 @@ class Chain(RequestHandler):
 class ChainWrapper(RequestHandler):
     def __init__(self, wrapper, handler=None):
         self.wrapper = wrapper
-        self.handler = handler or RequestHandler()
+        self.wrapped_handlers = handler or RequestHandler()
 
     def __or__(self, handler):
-        handler = prepare_handler(handler)
-        if self.handler is not None:
-            handler = self.handler | handler
-        return ChainWrapper(self.wrapper, handler)
+        return ChainWrapper(self.wrapper,
+                            self.wrapped_handlers | prepare_handler(handler))
 
     def __call__(self, rctx):
-        return self.wrapper(rctx, self.handler)
+        return self.wrapper(rctx, self.wrapped_handlers)
 
     def __repr__(self):
-        return '%s(%r, %r)' % (self.__class__.__name__, self.wrapper, self.handler)
+        return '%s(%r, %r)' % (self.__class__.__name__, self.wrapper, self.wrapped_handlers)
 
 
 class Wrapper(RequestHandler):
@@ -145,7 +133,6 @@ class Wrapper(RequestHandler):
 
 
 class Reverse(object):
-
     def __init__(self, urls, namespace, host=''):
         self.urls = urls
         self.namespace = namespace
@@ -162,15 +149,13 @@ class Reverse(object):
         subdomains, builders = url
 
         host = u'.'.join(subdomains)
-        absolute = (host != self.host)
+        #absolute = (host != self.host)
         path = u''.join([b(**kwargs) for b in builders])
         return URL(path, host=host)
 
 
 class Map(RequestHandler):
-
     def __init__(self, *handlers, **kwargs):
-        super(Map, self).__init__()
         # make sure all views are wrapped
         self.handlers = [prepare_handler(h) for h in handlers]
         self.__urls = self.compile_urls_map()
@@ -213,7 +198,7 @@ class Map(RequestHandler):
                 handlers.extend(self._get_chain_members(h))
         elif isinstance(handler, ChainWrapper):
             handlers.append(handler.wrapper)
-            handlers.extend(self._get_chain_members(handler.handler))
+            handlers.extend(self._get_chain_members(handler.wrapped_handlers))
         elif handler is not None:
             handlers.append(handler)
         return handlers
@@ -236,9 +221,7 @@ class Map(RequestHandler):
 
 class FunctionWrapper(RequestHandler):
     '''Wrapper for handler represented by function'''
-
     def __init__(self, func):
-        super(FunctionWrapper, self).__init__()
         self.func = func
 
     def handle(self, rctx):
@@ -274,7 +257,6 @@ class FunctionWrapper(RequestHandler):
 
 
 class Tracer(object):
-
     def __init__(self):
         self.__urls = {}
         self._current_step = {}

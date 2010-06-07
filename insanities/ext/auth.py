@@ -88,7 +88,7 @@ class CookieAuth(Wrapper):
         self._cookie_name = cookie_name
         self._login_form = login_form
 
-    def handle(self, rctx):
+    def handle(self, rctx, wrapped):
         user = None
         if self._cookie_name in rctx.request.cookies:
             key = rctx.request.cookies[self._cookie_name]
@@ -98,7 +98,7 @@ class CookieAuth(Wrapper):
         logger.debug('Got user: %r' % user)
         rctx.vals['user'] = user
         try:
-            result = self.exec_wrapped(rctx)
+            result = wrapped(rctx)
         finally:
             del rctx.vals['user']
         return result

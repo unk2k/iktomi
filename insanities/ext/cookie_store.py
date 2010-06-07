@@ -55,7 +55,7 @@ class CookieStore(Wrapper):
 
         super(CookieStore, self).__init__()
 
-    def handle(self, rctx):
+    def handle(self, rctx, wrapped):
         if self.cookie_name in rctx.request.cookies:
             sid = rctx.request.cookies[self.cookie_name]
             cookie_store = self.store.get(sid)
@@ -64,7 +64,7 @@ class CookieStore(Wrapper):
         rctx.cookie_store = cookie_store
 
         try:
-            rctx = self.exec_wrapped(rctx)
+            rctx = wrapped(rctx)
         finally:
             if rctx.cookie_store.should_save:
                 self.store.save(rctx.cookie_store)

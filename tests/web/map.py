@@ -260,4 +260,4 @@ class MapReverse(unittest.TestCase):
 
         rctx = RequestContext.blank('')
         ch2(rctx)
-        self.assertEqual(log, '13')
+        self.assertEqual(rctx.log, '13')

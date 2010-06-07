@@ -11,9 +11,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 class Debug(Wrapper):
-    def handle(self, rctx):
+    def handle(self, rctx, wrapped):
         try:
-            rctx = self.exec_wrapped(rctx)
+            rctx = wrapped(rctx)
         except HttpException, e:
             raise e
         except Exception, e:

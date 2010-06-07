@@ -24,12 +24,12 @@ class prefix(Wrapper):
     def trace(self, tracer):
         tracer.builder(self.builder)
 
-    def handle(self, rctx):
+    def handle(self, rctx, wrapped):
         matched, kwargs = self.builder.match(rctx.request.path)
         if matched:
             rctx.data.update(kwargs)
             rctx.request.add_prefix(quote(self.builder(**kwargs).encode('utf-8')))
-            rctx = self.exec_wrapped(rctx)
+            rctx = wrapped(rctx)
             return rctx
         return STOP
 
@@ -47,7 +47,7 @@ class subdomain(Wrapper):
         if self.subdomain:
             tracer.subdomain(self.subdomain)
 
-    def handle(self, rctx):
+    def handle(self, rctx, wrapped):
         subdomain = rctx.request.subdomain
         #XXX: here we can get 'idna' encoded sequence, that is the bug
         if self.subdomain:
@@ -61,7 +61,7 @@ class subdomain(Wrapper):
             #XXX: here we add subdomain prefix. What codec we need 'utf-8' or 'idna'
             rctx.request.add_subdomain(quote(self.subdomain.encode('utf-8')))
             #rctx.request.add_subdomain(self.subdomain)
-            rctx = self.exec_wrapped(rctx)
+            rctx = wrapped(rctx)
             return rctx
         return STOP
 
@@ -77,11 +77,11 @@ class Conf(Wrapper):
         self.namespace = ns
         self.conf = kwargs
 
-    def handle(self, rctx):
+    def handle(self, rctx, wrapped):
         if self.namespace:
             rctx.conf.push(self.namespace)
         rctx.conf.update(self.conf)
-        rctx = self.exec_wrapped(rctx)
+        rctx = wrapped(rctx)
         if self.namespace:
             rctx.conf.pop()
         return rctx

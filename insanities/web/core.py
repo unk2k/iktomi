@@ -13,11 +13,13 @@ from ..utils.url import URL
 logger = logging.getLogger(__name__)
 
 
-def prepaire_handler(handler):
+def prepare_handler(handler):
     '''Wrappes functions, that they can be usual RequestHandler's'''
     if type(handler) in (types.FunctionType, types.LambdaType,
                          types.MethodType):
         handler = FunctionWrapper(handler)
+    elif isinstance(handler, Wrapper):
+        handler = ChainWrapper(handler)
     return handler
 
 
@@ -28,37 +30,20 @@ class STOP(object): pass
 class RequestHandler(object):
     '''Base class for all request handlers.'''
 
-
     def __init__(self):
         self._next_handler = None
 
     def __or__(self, next):
-        if next is self:
-            raise ValueError('You are chaining same object to it self "%s". '
-                             'This causes max recursion error.' % next)
-        if self._next_handler is None:
-            self._next_handler = prepaire_handler(next)
+        next = prepare_handler(next)
+        this = prepare_handler(self)
+        if isinstance(next, Chain):
+            handlers = [this] + next.handlers
         else:
-            self._next_handler = self._next_handler | prepaire_handler(next)
-        return self
-
-    def __contains__(self, cls):
-        next = self
-        while next is not None:
-            if next.__class__ is cls:
-                return True
-            next = next.next()
-        return False
+            handlers = [this, next]
+        return Chain(handlers)
 
     def __call__(self, rctx):
-        next = self
-        while next is not None:
-            logger.debug('Handled by %r' % next)
-            rctx = next.handle(rctx)
-            if rctx is STOP:
-                break
-            next = next.next()
-        return rctx
+        return self.handle(rctx)
 
     def handle(self, rctx):
         '''This method should be overridden in subclasses.
@@ -72,19 +57,52 @@ class RequestHandler(object):
         pass
 
     def __repr__(self):
-        result = '%s()' % self.__class__.__name__
-        next = self.next()
-        while next:
-            result += ' | %r' % next
-            next = next.next()
-        return result
+        return '%s()' % self.__class__.__name__
 
-    def instances(self, cls):
-        result = []
-        for handler in self.__handlers:
-            if isinstance(handler, cls):
-                result.append(handler)
-        return result
+
+class Chain(RequestHandler):
+
+    def __init__(self, handlers):
+        self.handlers = handlers
+
+    def __or__(self, next):
+        next = prepare_handler(next)
+
+        last = self.handlers[-1]
+        if isinstance(last, ChainWrapper):
+            handlers = self.handlers[:-1] + [last | next]
+        elif isinstance(next, Chain):
+            handlers = self.handlers + next.handlers
+        else:
+            handlers = self.handlers + [next]
+        return Chain(handlers)
+
+    def __call__(self, rctx):
+        for handler in self.handlers:
+            if rctx is STOP: return STOP
+            rctx = handler(rctx)
+        return rctx
+
+    def __repr__(self):
+        return '%s(*%r)' % (self.__class__.__name__, self.handlers)
+
+
+class ChainWrapper(RequestHandler):
+    def __init__(self, wrapper, handler=None):
+        self.wrapper = wrapper
+        self.handler = handler or RequestHandler()
+
+    def __or__(self, handler):
+        handler = prepare_handler(handler)
+        if self.handler is not None:
+            handler = self.handler | handler
+        return ChainWrapper(self.wrapper, handler)
+
+    def __call__(self, rctx):
+        return self.wrapper(rctx, self.handler)
+
+    def __repr__(self):
+        return '%s(%r, %r)' % (self.__class__.__name__, self.wrapper, self.handler)
 
 
 class Wrapper(RequestHandler):
@@ -92,14 +110,14 @@ class Wrapper(RequestHandler):
     A subclass of RequestHandler with other order of calling chained handlers.
 
     Base class for handlers wrapping execution of next chains. Subclasses should
-    execute chained handlers in :meth:`handle` method by calling :meth:`exec_wrapped`
-    method. For example::
+    execute chained handlers in :meth:`handle` method by calling :object:`wrapped`.
+    For example::
 
         class MyWrapper(Wrapper):
-            def handle(self, rctx):
+            def handle(self, rctx, wrapped):
                 do_smth(rctx)
                 try:
-                    rctx = self.exec_wrapped(rctx)
+                    rctx = wrapped(rctx)
                 finally:
                     do_smth2(rctx)
                 return rctx
@@ -109,24 +127,14 @@ class Wrapper(RequestHandler):
     store http-sessions), it is recommended to use context managers
     ("with" statements) or try...finally constructions.
     '''
-    def next(self):
-        return None
 
-    def exec_wrapped(self, rctx):
-        '''Executes the wrapped chain. Should be called from :meth:`handle` method.'''
-        next = self._next_handler
-        while next is not None:
-            logger.debug('Handled by %r' % next)
-            rctx = next.handle(rctx)
-            if rctx is STOP:
-                break
-            next = next.next()
-        return rctx
+    def __call__(self, rctx, wrapped):
+        return self.handle(rctx, wrapped)
 
-    def handle(self, rctx):
+    def handle(self, rctx, wrapped):
         '''Should be overriden in subclasses.'''
         logger.debug("Wrapper begin %r" % self)
-        rctx = self.exec_wrapped(rctx)
+        rctx = wrapped(rctx)
         logger.debug("Wrapper end %r" % self)
         return rctx
 
@@ -162,7 +170,7 @@ class Map(RequestHandler):
     def __init__(self, *handlers, **kwargs):
         super(Map, self).__init__()
         # make sure all views are wrapped
-        self.handlers = [prepaire_handler(h) for h in handlers]
+        self.handlers = [prepare_handler(h) for h in handlers]
         self.__urls = self.compile_urls_map()
         self.rctx_class = kwargs.get('rctx_class', RequestContext)
 
@@ -196,16 +204,27 @@ class Map(RequestHandler):
         rctx.vals['url_for'] = rctx.data['url_for'] = last_url_for
         return STOP
 
+    def _get_chain_members(self, handler):
+        handlers = []
+        if isinstance(handler, Chain):
+            for h in handler.handlers:
+                handlers.extend(self._get_chain_members(h))
+        elif isinstance(handler, ChainWrapper):
+            handlers.append(handler.wrapper)
+            handlers.extend(self._get_chain_members(handler.handler))
+        elif handler is not None:
+            handlers.append(handler)
+        return handlers
+
     def compile_urls_map(self):
         tracer = Tracer()
         for handler in self.handlers:
             item = handler
-            while item:
+            for item in self._get_chain_members(handler):
                 if isinstance(item, Map):
                     tracer.nested_map(item)
                     break
                 item.trace(tracer)
-                item = item._next_handler
             tracer.finish_step()
         return tracer.urls
 

@@ -39,11 +39,11 @@ class sqla_session(Wrapper):
                                       bind=engine, autoflush=False,
                                       autocommit=False)
 
-    def handle(self, rctx):
+    def handle(self, rctx, wrapped):
         db = self.maker()
         rctx.vals[self.param_name] = db
         try:
-            rctx = self.exec_wrapped(rctx)
+            rctx = wrapped(rctx)
         finally:
             db.close()
         return rctx

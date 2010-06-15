@@ -71,6 +71,18 @@
 <div class="section" id="internationalization-support-request-handlers">
 <span id="insanities-i18n-support"></span><h3>Internationalization support request handlers<a class="headerlink" href="#internationalization-support-request-handlers" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
+<dt id="insanities.utils.i18n.BaseI18nSupport">
+<em class="property">class </em><tt class="descclassname">insanities.utils.i18n.</tt><tt class="descname">BaseI18nSupport</tt><big>(</big><em>languages=None</em>, <em>default_language=None</em>, <em>load_from_cookie=None</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.BaseI18nSupport" title="Permalink to this definition">¶</a></dt>
+<dd><p>A base class for creating i18n handler implementations</p>
+<dl class="method">
+<dt id="insanities.utils.i18n.BaseI18nSupport.handle">
+<tt class="descname">handle</tt><big>(</big><em>rctx</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.BaseI18nSupport.handle" title="Permalink to this definition">¶</a></dt>
+<dd>Adds self to rctx.vals as <tt class="xref docutils literal"><span class="pre">language_handler</span></tt> and activates the
+default language (looks it up in cookies or uses default_language)</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="insanities.utils.i18n.gettext_support">
 <em class="property">class </em><tt class="descclassname">insanities.utils.i18n.</tt><tt class="descname">gettext_support</tt><big>(</big><em>localepath</em>, <em>default_language=None</em>, <em>languages=None</em>, <em>domain='insanities'</em>, <em>load_from_cookie=None</em><big>)</big><a class="headerlink" href="#insanities.utils.i18n.gettext_support" title="Permalink to this definition">¶</a></dt>
 <dd><p>Request handler addding support of i18n</p>

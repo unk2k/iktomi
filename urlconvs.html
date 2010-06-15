@@ -64,15 +64,15 @@
 
 <dl class="method">
 <dt id="insanities.web.urlconvs.Converter.to_python">
-<tt class="descname">to_python</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#insanities.web.urlconvs.Converter.to_python" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accepts quoted url part and returns python object.</p>
+<tt class="descname">to_python</tt><big>(</big><em>value</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#insanities.web.urlconvs.Converter.to_python" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts unicode url part and returns python object.</p>
 <p>Should be implemented in subclasses</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="insanities.web.urlconvs.Converter.to_url">
 <tt class="descname">to_url</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#insanities.web.urlconvs.Converter.to_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accepts python object and returns string prepared to be used
+<dd><p>Accepts python object and returns unicode prepared to be used
 in url building.</p>
 <p>Should be implemented in subclasses</p>
 </dd></dl>

@@ -54,16 +54,31 @@
 <div class="section" id="requestcontext">
 <span id="id2"></span><h3>RequestContext<a class="headerlink" href="#requestcontext" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
-<dt id="insanities.web.http.RequestContext">
-<em class="property">class </em><tt class="descclassname">insanities.web.http.</tt><tt class="descname">RequestContext</tt><big>(</big><em>wsgi_environ</em><big>)</big><a class="headerlink" href="#insanities.web.http.RequestContext" title="Permalink to this definition">¶</a></dt>
+<dt id="insanities.web.core.RequestContext">
+<em class="property">class </em><tt class="descclassname">insanities.web.core.</tt><tt class="descname">RequestContext</tt><big>(</big><em>wsgi_environ</em><big>)</big><a class="headerlink" href="#insanities.web.core.RequestContext" title="Permalink to this definition">¶</a></dt>
 <dd><p>Context of the request. A class containing request and response objects and
 a number of data containers with request environment and processing data.</p>
 <dl class="classmethod">
-<dt id="insanities.web.http.RequestContext.blank">
-<em class="property">classmethod </em><tt class="descname">blank</tt><big>(</big><em>url</em>, <em>**data</em><big>)</big><a class="headerlink" href="#insanities.web.http.RequestContext.blank" title="Permalink to this definition">¶</a></dt>
+<dt id="insanities.web.core.RequestContext.blank">
+<em class="property">classmethod </em><tt class="descname">blank</tt><big>(</big><em>url</em>, <em>**data</em><big>)</big><a class="headerlink" href="#insanities.web.core.RequestContext.blank" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method returning blank rctx. Very useful for testing</p>
 <p><cite>data</cite> - POST parameters.</p>
 </dd></dl>
+
+<dl class="method">
+<dt id="insanities.web.core.RequestContext.complete">
+<tt class="descname">complete</tt><big>(</big><big>)</big><a class="headerlink" href="#insanities.web.core.RequestContext.complete" title="Permalink to this definition">¶</a></dt>
+<dd>Completes the chain execution without STOP signal</dd></dl>
+
+<dl class="method">
+<dt id="insanities.web.core.RequestContext.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#insanities.web.core.RequestContext.next" title="Permalink to this definition">¶</a></dt>
+<dd>Call next handler</dd></dl>
+
+<dl class="method">
+<dt id="insanities.web.core.RequestContext.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big><a class="headerlink" href="#insanities.web.core.RequestContext.stop" title="Permalink to this definition">¶</a></dt>
+<dd>Stop chain execution and try to handle Map&#8217;s next chain (if any).</dd></dl>
 
 </dd></dl>
 

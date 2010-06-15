@@ -72,9 +72,10 @@
 <dl>
 
 <dt><a href="fields.html#insanities.forms.fields.BaseField">BaseField (class in insanities.forms.fields)</a></dt>
-<dt><a href="http.html#insanities.web.http.RequestContext.blank">blank() (insanities.web.http.RequestContext class method)</a></dt>
-<dt><a href="convs.html#insanities.forms.convs.Bool">Bool (class in insanities.forms.convs)</a></dt>
-<dt><a href="urlconvs.html#insanities.web.urlconvs.Boolean">Boolean (class in insanities.web.urlconvs)</a></dt></dl></td><td width="33%" valign="top"><dl>
+<dt><a href="i18n.html#insanities.utils.i18n.BaseI18nSupport">BaseI18nSupport (class in insanities.utils.i18n)</a></dt>
+<dt><a href="http.html#insanities.web.core.RequestContext.blank">blank() (insanities.web.core.RequestContext class method)</a></dt>
+<dt><a href="convs.html#insanities.forms.convs.Bool">Bool (class in insanities.forms.convs)</a></dt></dl></td><td width="33%" valign="top"><dl>
+<dt><a href="urlconvs.html#insanities.web.urlconvs.Boolean">Boolean (class in insanities.web.urlconvs)</a></dt>
 <dt><a href="widgets.html#insanities.forms.widgets.TinyMce.browsers">browsers (insanities.forms.widgets.TinyMce attribute)</a></dt>
 <dt><a href="widgets.html#insanities.forms.widgets.TinyMce.buttons">buttons (insanities.forms.widgets.TinyMce attribute)</a></dt>
 </dl></td></tr></table>
@@ -99,6 +100,7 @@
 <dt><a href="i18n.html#insanities.utils.i18n.gettext_commands.command_make">command_make() (insanities.utils.i18n.gettext_commands method)</a></dt>
 <dt><a href="management.html#insanities.management.commands.server.command_serve">command_serve() (insanities.management.commands.server method)</a></dt>
 <dt><a href="management.html#insanities.management.commands.CommandDigest">CommandDigest (class in insanities.management.commands)</a></dt>
+<dt><a href="http.html#insanities.web.core.RequestContext.complete">complete() (insanities.web.core.RequestContext method)</a></dt>
 <dt><a href="widgets.html#insanities.forms.widgets.TinyMce.compress">compress (insanities.forms.widgets.TinyMce attribute)</a></dt>
 <dt><a href="routing.html#insanities.web.wrappers.Conf">Conf (class in insanities.web.wrappers)</a></dt>
 <dt><a href="widgets.html#insanities.forms.widgets.TinyMce.content_css">content_css (insanities.forms.widgets.TinyMce attribute)</a></dt>
@@ -131,7 +133,6 @@
 <dt><a href="fields.html#insanities.forms.fields.BaseField.error">error (insanities.forms.fields.BaseField attribute)</a></dt>
 <dt><a href="convs.html#insanities.forms.convs.Converter.error">error() (insanities.forms.convs.Converter method)</a></dt></dl></td><td width="33%" valign="top"><dl>
 <dt><a href="widgets.html#insanities.forms.widgets.CharDisplay.escape">escape (insanities.forms.widgets.CharDisplay attribute)</a></dt>
-<dt><a href="routing.html#insanities.web.core.Wrapper.exec_wrapped">exec_wrapped() (insanities.web.core.Wrapper method)</a></dt>
 <dt><a href="i18n.html#insanities.utils.i18n.gettext_commands.extract_messages">extract_messages() (insanities.utils.i18n.gettext_commands method)</a></dt>
 </dl></td></tr></table>
 
@@ -183,9 +184,9 @@
 <table width="100%" class="indextable"><tr><td width="33%" valign="top">
 <dl>
 
-<dt><a href="routing.html#insanities.web.core.RequestHandler.handle">handle() (insanities.web.core.RequestHandler method)</a></dt>
+<dt><a href="i18n.html#insanities.utils.i18n.BaseI18nSupport.handle">handle() (insanities.utils.i18n.BaseI18nSupport method)</a></dt>
   <dd><dl>
-    <dt><a href="routing.html#insanities.web.core.Wrapper.handle">(insanities.web.core.Wrapper method)</a></dt>
+    <dt><a href="routing.html#insanities.web.core.RequestHandler.handle">(insanities.web.core.RequestHandler method)</a></dt>
   </dl></dd>
 <dt><a href="widgets.html#insanities.forms.widgets.HiddenInput">HiddenInput (class in insanities.forms.widgets)</a></dt></dl></td><td width="33%" valign="top"><dl>
 <dt><a href="convs.html#insanities.forms.convs.Html">Html (class in insanities.forms.convs)</a></dt>
@@ -204,7 +205,7 @@
 <dt><a href="fields.html#insanities.forms.fields.BaseField.input_name">input_name (insanities.forms.fields.BaseField attribute)</a></dt>
 <dt><a href="index.html#module-insanities">insanities (module)</a></dt>
 <dt><a href="index.html#module-insanities.forms">insanities.forms (module)</a></dt>
-<dt><a href="widgets.html#module-insanities.forms.fields">insanities.forms.fields (module)</a>, <a href="fields.html#module-insanities.forms.fields">[1]</a></dt>
+<dt><a href="fields.html#module-insanities.forms.fields">insanities.forms.fields (module)</a>, <a href="widgets.html#module-insanities.forms.fields">[1]</a></dt>
 <dt><a href="forms.html#module-insanities.forms.form">insanities.forms.form (module)</a></dt>
 <dt><a href="media.html#module-insanities.forms.media">insanities.forms.media (module)</a></dt>
 <dt><a href="perms.html#module-insanities.forms.perms">insanities.forms.perms (module)</a></dt>
@@ -267,7 +268,9 @@
 
 <dt><a href="i18n.html#insanities.utils.N_">N_() (in module insanities.utils)</a></dt>
 <dt><a href="urlconvs.html#insanities.web.urlconvs.Converter.name">name (insanities.web.urlconvs.Converter attribute)</a></dt>
-<dt><a href="convs.html#insanities.forms.convs.Converter.null">null (insanities.forms.convs.Converter attribute)</a></dt></dl></td><td width="33%" valign="top"><dl>
+<dt><a href="routing.html#insanities.web.wrappers.namespace">namespace (class in insanities.web.wrappers)</a></dt>
+<dt><a href="http.html#insanities.web.core.RequestContext.next">next() (insanities.web.core.RequestContext method)</a></dt></dl></td><td width="33%" valign="top"><dl>
+<dt><a href="convs.html#insanities.forms.convs.Converter.null">null (insanities.forms.convs.Converter attribute)</a></dt>
 <dt><a href="widgets.html#insanities.forms.widgets.Select.null_label">null_label (insanities.forms.widgets.Select attribute)</a></dt>
 </dl></td></tr></table>
 
@@ -307,7 +310,7 @@
     <dt><a href="widgets.html#insanities.forms.widgets.Widget.render">(insanities.forms.widgets.Widget method)</a></dt>
   </dl></dd></dl></td><td width="33%" valign="top"><dl>
 <dt><a href="http.html#insanities.web.http.Request">Request (class in insanities.web.http)</a></dt>
-<dt><a href="http.html#insanities.web.http.RequestContext">RequestContext (class in insanities.web.http)</a></dt>
+<dt><a href="http.html#insanities.web.core.RequestContext">RequestContext (class in insanities.web.core)</a></dt>
 <dt><a href="routing.html#insanities.web.core.RequestHandler">RequestHandler (class in insanities.web.core)</a></dt>
 </dl></td></tr></table>
 
@@ -320,9 +323,10 @@
 <dt><a href="widgets.html#insanities.forms.widgets.Select">Select (class in insanities.forms.widgets)</a></dt>
 <dt><a href="management.html#insanities.management.commands.server">server (class in insanities.management.commands)</a></dt>
 <dt><a href="utils.html#insanities.utils.url.URL.set">set() (insanities.utils.url.URL method)</a></dt>
-<dt><a href="i18n.html#insanities.utils.i18n.set_lang">set_lang (class in insanities.utils.i18n)</a></dt></dl></td><td width="33%" valign="top"><dl>
-<dt><a href="perms.html#insanities.forms.perms.SimplePerm">SimplePerm (class in insanities.forms.perms)</a></dt>
+<dt><a href="i18n.html#insanities.utils.i18n.set_lang">set_lang (class in insanities.utils.i18n)</a></dt>
+<dt><a href="perms.html#insanities.forms.perms.SimplePerm">SimplePerm (class in insanities.forms.perms)</a></dt></dl></td><td width="33%" valign="top"><dl>
 <dt><a href="widgets.html#insanities.forms.widgets.Select.size">size (insanities.forms.widgets.Select attribute)</a></dt>
+<dt><a href="http.html#insanities.web.core.RequestContext.stop">stop() (insanities.web.core.RequestContext method)</a></dt>
 <dt><a href="urlconvs.html#insanities.web.urlconvs.String">String (class in insanities.web.urlconvs)</a></dt>
 <dt><a href="convs.html#insanities.forms.convs.Char.strip">strip (insanities.forms.convs.Char attribute)</a></dt>
 <dt><a href="routing.html#insanities.web.wrappers.subdomain">subdomain (class in insanities.web.wrappers)</a></dt>
@@ -352,7 +356,8 @@
 <table width="100%" class="indextable"><tr><td width="33%" valign="top">
 <dl>
 
-<dt><a href="utils.html#insanities.utils.url.URL">URL (class in insanities.utils.url)</a></dt></dl></td><td width="33%" valign="top"><dl>
+<dt><a href="utils.html#insanities.utils.url.URL">URL (class in insanities.utils.url)</a></dt>
+<dt><a href="utils.html#insanities.utils.url.UrlTemplate">UrlTemplate (class in insanities.utils.url)</a></dt></dl></td><td width="33%" valign="top"><dl>
 </dl></td></tr></table>
 
 <h2 id="V">V</h2>
@@ -368,7 +373,6 @@
 
 <dt><a href="widgets.html#insanities.forms.widgets.Widget">Widget (class in insanities.forms.widgets)</a></dt>
 <dt><a href="fields.html#insanities.forms.fields.Field.widget">widget (insanities.forms.fields.Field attribute)</a></dt></dl></td><td width="33%" valign="top"><dl>
-<dt><a href="routing.html#insanities.web.core.Wrapper">Wrapper (class in insanities.web.core)</a></dt>
 </dl></td></tr></table>
 
 

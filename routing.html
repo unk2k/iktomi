@@ -49,7 +49,6 @@
 <dt><a class="reference internal" href="#webbaseclasses"><em>Base classes</em></a></dt>
 <dd><ul class="first last simple">
 <li><a class="reference internal" href="#requesthandler"><em>RequestHandler</em></a></li>
-<li><a class="reference internal" href="#wrapper"><em>Wrapper</em></a></li>
 <li><a class="reference internal" href="#map"><em>Map</em></a></li>
 <li><a class="reference internal" href="#functionwrapper"><em>FunctionWrapper</em></a></li>
 </ul>
@@ -63,6 +62,7 @@
 <li><a class="reference internal" href="#method"><em>method</em></a></li>
 <li><a class="reference internal" href="#prefix"><em>prefix</em></a></li>
 <li><a class="reference internal" href="#subdomain"><em>subdomain</em></a></li>
+<li><a class="reference internal" href="#namespace"><em>namespace</em></a></li>
 <li><a class="reference internal" href="#conf"><em>Conf</em></a></li>
 </ul>
 </dd>
@@ -86,52 +86,43 @@ It always takes rctx object as only argument and returns it</dd></dl>
 </dd></dl>
 
 </div>
-<div class="section" id="wrapper">
-<span id="id2"></span><h3>Wrapper<a class="headerlink" href="#wrapper" title="Permalink to this headline">¶</a></h3>
-<dl class="class">
-<dt id="insanities.web.core.Wrapper">
-<em class="property">class </em><tt class="descclassname">insanities.web.core.</tt><tt class="descname">Wrapper</tt><a class="headerlink" href="#insanities.web.core.Wrapper" title="Permalink to this definition">¶</a></dt>
-<dd><p>A subclass of RequestHandler with other order of calling chained handlers.</p>
-<p>Base class for handlers wrapping execution of next chains. Subclasses should
-execute chained handlers in <a title="insanities.web.core.Wrapper.handle" class="reference internal" href="#insanities.web.core.Wrapper.handle"><tt class="xref docutils literal"><span class="pre">handle()</span></tt></a> method by calling <a title="insanities.web.core.Wrapper.exec_wrapped" class="reference internal" href="#insanities.web.core.Wrapper.exec_wrapped"><tt class="xref docutils literal"><span class="pre">exec_wrapped()</span></tt></a>
-method. For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyWrapper</span><span class="p">(</span><span class="n">Wrapper</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rctx</span><span class="p">):</span>
-        <span class="n">do_smth</span><span class="p">(</span><span class="n">rctx</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">rctx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exec_wrapped</span><span class="p">(</span><span class="n">rctx</span><span class="p">)</span>
-        <span class="k">finally</span><span class="p">:</span>
-            <span class="n">do_smth2</span><span class="p">(</span><span class="n">rctx</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">rctx</span>
-</pre></div>
-</div>
-<p><em>Note</em>: Be careful with exceptions. Chained method can throw exceptions including
-HttpExceptions. If you use wrappers to finalize some actions (close db connection,
-store http-sessions), it is recommended to use context managers
-(&#8220;with&#8221; statements) or try...finally constructions.</p>
-<dl class="method">
-<dt id="insanities.web.core.Wrapper.exec_wrapped">
-<tt class="descname">exec_wrapped</tt><big>(</big><em>rctx</em><big>)</big><a class="headerlink" href="#insanities.web.core.Wrapper.exec_wrapped" title="Permalink to this definition">¶</a></dt>
-<dd>Executes the wrapped chain. Should be called from <a title="insanities.web.core.Wrapper.handle" class="reference internal" href="#insanities.web.core.Wrapper.handle"><tt class="xref docutils literal"><span class="pre">handle()</span></tt></a> method.</dd></dl>
-
-<dl class="method">
-<dt id="insanities.web.core.Wrapper.handle">
-<tt class="descname">handle</tt><big>(</big><em>rctx</em><big>)</big><a class="headerlink" href="#insanities.web.core.Wrapper.handle" title="Permalink to this definition">¶</a></dt>
-<dd>Should be overriden in subclasses.</dd></dl>
-
-</dd></dl>
-
-</div>
 <div class="section" id="map">
-<span id="id3"></span><h3>Map<a class="headerlink" href="#map" title="Permalink to this headline">¶</a></h3>
+<span id="id2"></span><h3>Map<a class="headerlink" href="#map" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="insanities.web.core.Map">
 <em class="property">class </em><tt class="descclassname">insanities.web.core.</tt><tt class="descname">Map</tt><big>(</big><em>*handlers</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#insanities.web.core.Map" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Strores combinations RequestHandler instances: chains and maps.
+For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">h1</span> <span class="o">|</span> <span class="n">h2</span> <span class="o">|</span> <span class="n">h3</span>
+</pre></div>
+</div>
+<p>where h1, h2 and h3 are RequestHandler instances, will produce 
+Map instance with one chain containing three handlers.</p>
+<p>And following construction:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Map</span><span class="p">(</span>
+    <span class="n">h1</span> <span class="o">|</span> <span class="n">h2</span> <span class="o">|</span> <span class="n">h3</span><span class="p">,</span>
+    <span class="n">Map</span><span class="p">(</span>
+        <span class="n">h3</span> <span class="o">|</span> <span class="n">h4</span><span class="p">,</span>
+        <span class="n">h7</span><span class="p">),</span>
+    <span class="n">h5</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>will produce a map with three chains: the first contains three handlers and others
+contain one handlers.</p>
+<p>Map tries to execute each of it&#8217;s chains until success. Unsuccesfull chain execution means
+one of the handlers in chain returns <cite>rctx.stop()</cite> signal. Succesful execution means either
+all handlers return <cite>rctx.next()</cite>, or any of them returns <cite>rctx.complete()</cite> signal.</p>
+<p>If all handlers have been finished unsuccesfully, Map returns <cite>rctx.stop()</cite> signal.</p>
+<p>Map also incapsulates rctx dictionaries&#8217; (rctx.conf, rctx.vals, rctx.data) state
+management: changes in a chain does not attract on other ones in current map.
+If the chain has been finished succesfully, all changes are commited, otherwise
+they are rolled back.</p>
+</dd></dl>
 
 </div>
 <div class="section" id="functionwrapper">
-<span id="id4"></span><h3>FunctionWrapper<a class="headerlink" href="#functionwrapper" title="Permalink to this headline">¶</a></h3>
+<span id="id3"></span><h3>FunctionWrapper<a class="headerlink" href="#functionwrapper" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="insanities.web.core.FunctionWrapper">
 <em class="property">class </em><tt class="descclassname">insanities.web.core.</tt><tt class="descname">FunctionWrapper</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#insanities.web.core.FunctionWrapper" title="Permalink to this definition">¶</a></dt>
@@ -142,7 +133,7 @@ store http-sessions), it is recommended to use context managers
 <div class="section" id="default-handlers">
 <span id="webdefaulthandlers"></span><h2>Default handlers<a class="headerlink" href="#default-handlers" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="match">
-<span id="id5"></span><h3>match<a class="headerlink" href="#match" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3>match<a class="headerlink" href="#match" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="insanities.web.filters.match">
 <em class="property">class </em><tt class="descclassname">insanities.web.filters.</tt><tt class="descname">match</tt><big>(</big><em>url</em>, <em>name</em>, <em>converters=None</em><big>)</big><a class="headerlink" href="#insanities.web.filters.match" title="Permalink to this definition">¶</a></dt>
@@ -150,7 +141,7 @@ store http-sessions), it is recommended to use context managers
 
 </div>
 <div class="section" id="method">
-<span id="id6"></span><h3>method<a class="headerlink" href="#method" title="Permalink to this headline">¶</a></h3>
+<span id="id5"></span><h3>method<a class="headerlink" href="#method" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="insanities.web.filters.method">
 <em class="property">class </em><tt class="descclassname">insanities.web.filters.</tt><tt class="descname">method</tt><big>(</big><em>*names</em><big>)</big><a class="headerlink" href="#insanities.web.filters.method" title="Permalink to this definition">¶</a></dt>
@@ -158,7 +149,7 @@ store http-sessions), it is recommended to use context managers
 
 </div>
 <div class="section" id="prefix">
-<span id="id7"></span><h3>prefix<a class="headerlink" href="#prefix" title="Permalink to this headline">¶</a></h3>
+<span id="id6"></span><h3>prefix<a class="headerlink" href="#prefix" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="insanities.web.wrappers.prefix">
 <em class="property">class </em><tt class="descclassname">insanities.web.wrappers.</tt><tt class="descname">prefix</tt><big>(</big><em>_prefix</em><big>)</big><a class="headerlink" href="#insanities.web.wrappers.prefix" title="Permalink to this definition">¶</a></dt>
@@ -166,10 +157,18 @@ store http-sessions), it is recommended to use context managers
 
 </div>
 <div class="section" id="subdomain">
-<span id="id8"></span><h3>subdomain<a class="headerlink" href="#subdomain" title="Permalink to this headline">¶</a></h3>
+<span id="id7"></span><h3>subdomain<a class="headerlink" href="#subdomain" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="insanities.web.wrappers.subdomain">
 <em class="property">class </em><tt class="descclassname">insanities.web.wrappers.</tt><tt class="descname">subdomain</tt><big>(</big><em>_subdomain</em><big>)</big><a class="headerlink" href="#insanities.web.wrappers.subdomain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="namespace">
+<span id="id8"></span><h3>namespace<a class="headerlink" href="#namespace" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="insanities.web.wrappers.namespace">
+<em class="property">class </em><tt class="descclassname">insanities.web.wrappers.</tt><tt class="descname">namespace</tt><big>(</big><em>ns</em><big>)</big><a class="headerlink" href="#insanities.web.wrappers.namespace" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -177,7 +176,7 @@ store http-sessions), it is recommended to use context managers
 <span id="id9"></span><h3>Conf<a class="headerlink" href="#conf" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="insanities.web.wrappers.Conf">
-<em class="property">class </em><tt class="descclassname">insanities.web.wrappers.</tt><tt class="descname">Conf</tt><big>(</big><em>ns</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#insanities.web.wrappers.Conf" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">insanities.web.wrappers.</tt><tt class="descname">Conf</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#insanities.web.wrappers.Conf" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -195,7 +194,6 @@ store http-sessions), it is recommended to use context managers
 <li><a class="reference external" href="#">Routing tools</a><ul>
 <li><a class="reference external" href="#module-insanities.web.core">Base classes</a><ul>
 <li><a class="reference external" href="#requesthandler">RequestHandler</a></li>
-<li><a class="reference external" href="#wrapper">Wrapper</a></li>
 <li><a class="reference external" href="#map">Map</a></li>
 <li><a class="reference external" href="#functionwrapper">FunctionWrapper</a></li>
 </ul>
@@ -205,6 +203,7 @@ store http-sessions), it is recommended to use context managers
 <li><a class="reference external" href="#method">method</a></li>
 <li><a class="reference external" href="#prefix">prefix</a></li>
 <li><a class="reference external" href="#subdomain">subdomain</a></li>
+<li><a class="reference external" href="#namespace">namespace</a></li>
 <li><a class="reference external" href="#conf">Conf</a></li>
 </ul>
 </li>

@@ -17,11 +17,11 @@ logger = logging.getLogger(__name__)
 
 class match(RequestHandler):
 
-    def __init__(self, url, name, converters=None):
+    def __init__(self, url, name, converters=None , match_whole_str = True):
         super(match,self).__init__()
         self.url = url
         self.url_name = name
-        self.builder = UrlTemplate(url)
+        self.builder = UrlTemplate(url ,converters = converters, match_whole_str = match_whole_str)
 
     def trace(self, tracer):
         tracer.url_name(self.url_name)
@@ -29,6 +29,7 @@ class match(RequestHandler):
 
     def handle(self, rctx):
         matched, kwargs = self.builder.match(rctx.request.path, rctx=rctx)
+        print self,matched,kwargs,self.builder.match
         if matched:
             rctx.conf.url_name = self.url_name
             rctx.data.update(kwargs)

@@ -48,6 +48,7 @@ class String(Converter):
     name='string'
 
     def to_python(self, value, **kwargs):
+	print self,value
         return value
 
     def to_url(self, value):

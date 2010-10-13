@@ -29,7 +29,6 @@ class match(RequestHandler):
 
     def handle(self, rctx):
         matched, kwargs = self.builder.match(rctx.request.path, rctx=rctx)
-        print self,matched,kwargs,self.builder.match
         if matched:
             rctx.conf.url_name = self.url_name
             rctx.data.update(kwargs)

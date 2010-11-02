@@ -17,11 +17,11 @@ logger = logging.getLogger(__name__)
 
 class match(RequestHandler):
 
-    def __init__(self, url, name, converters=None , match_whole_str = True):
+    def __init__(self, url, name, converters=None , match_whole_str = True, allowed_symbol = None):
         super(match,self).__init__()
         self.url = url
         self.url_name = name
-        self.builder = UrlTemplate(url ,converters = converters, match_whole_str = match_whole_str)
+        self.builder = UrlTemplate(url ,converters = converters, match_whole_str = match_whole_str, allowed_symbol = allowed_symbol)
 
     def trace(self, tracer):
         tracer.url_name(self.url_name)

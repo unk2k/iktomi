@@ -226,19 +226,19 @@ class Char(Converter):
         # various validations
         if self.nontext_replacement is not None:
             value = replace_nontext(value, self.nontext_replacement)
-        if self.max_length==self.min_length!=None:
-            self._assert(len(value) == self.max_length, 'error_length_exact',
+#        if self.max_length==self.min_length!=None:
+#            self._assert(len(value) == self.max_length, 'error_length_exact',
+#                         count=self.max_length)
+#        else:
+        if self.max_length:
+            self._assert(len(value) <= self.max_length, 'max_length',
                          count=self.max_length)
-        else:
-            if self.max_length:
-                self._assert(len(value) <= self.max_length, 'max_length',
-                             count=self.max_length)
-            if self.min_length:
-                if self.min_length == 1:
-                    self._assert(len(value) >= self.min_length, 'notempty')
-                else:
-                    self._assert(len(value) >= self.min_length, 'min_length',
-                                 count=self.min_length)
+        if self.min_length:
+            if self.min_length == 1:
+                self._assert(len(value) >= self.min_length, 'notempty')
+            else:
+                self._assert(len(value) >= self.min_length, 'min_length',
+                             count=self.min_length)
         if self.regex:
             regex = self.regex
             if isinstance(self.regex, basestring):

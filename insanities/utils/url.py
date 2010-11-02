@@ -123,13 +123,13 @@ class UrlTemplate(object):
             >$''', re.VERBOSE | re.U)
     _static_url_pattern = re.compile(r'^[^<]*?$')
 
-    def __init__(self, template, match_whole_str=True, converters=None):
+    def __init__(self, template, match_whole_str = True, converters = None, allowed_symbol = None):
         self.template = template
         self.match_whole_str = match_whole_str
         self._allowed_converters = self._init_converters(converters)
         self._builder_params = []
         self._converters = {}
-        self._pattern = re.compile(self._parse(template))
+        self._pattern = re.compile(self._parse(template, allowed_symbol))
 
     def match(self, path, **kw):
         m = self._pattern.match(unquote(path).decode('utf-8'))
@@ -148,7 +148,7 @@ class UrlTemplate(object):
             return True, kwargs
         return False, {}
 
-    def _parse(self, url):
+    def _parse(self, url, allowed_symbol = None):
         result = r'^'
         parts = self._split_pattern.split(url)
         total_parts = len(parts)
@@ -167,7 +167,10 @@ class UrlTemplate(object):
                     if variable is None:
                         variable = converter
                         converter = 'string'
-                    result += '(?P<%s>[a-zA-Z0-9_%%-]+)' % variable
+                    if allowed_symbol:
+                        result += '(?P<%s>%s)' % (variable, allowed_symbol, )
+                    else:
+                        result += '(?P<%s>[a-zA-Z0-9_%%-]+)' % variable
                     self._builder_params.append([variable, converter, args])
                     self._converters[variable] = [converter, args]
                     continue

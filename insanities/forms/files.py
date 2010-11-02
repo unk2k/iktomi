@@ -3,7 +3,6 @@ import cgi
 import string
 from os import path
 import os, struct, tempfile, time
-from PIL import Image
 from ..utils import weakproxy, cached_property
 from .fields import Field
 from .widgets import FileInput, ImageInput
@@ -80,6 +79,7 @@ class TempImageFile(TempUploadedFile):
 
     def save(self, file):
         try:
+            from PIL import Image
             image = Image.open(file)
         except IOError, e:
             raise convs.ValidationError(self.invalid_image)
@@ -124,6 +124,7 @@ class StoredImageFile(StoredFile):
 
     @cached_property
     def image(self):
+        from PIL import Image
         return Image.open(self.full_path)
 
 

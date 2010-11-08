@@ -141,7 +141,7 @@ class UrlTemplate(object):
                 # now we replace converter by class instance
                 conv = self._init_converter(conv_name, args)
                 try:
-                    kwargs[k] = conv.to_python(unquote(v).decode('utf-8'), **kw)
+                    kwargs[k] = conv.to_python(v, **kw)
                 except ConvertError, err:
                     logger.debug('ConvertError by "%s", value "%s"' % (err.converter, err.value.encode('utf-8')))
                     return False, {}

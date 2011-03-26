@@ -3,7 +3,6 @@ import cgi
 import string
 from os import path
 import os, struct, tempfile, time, logging
-from PIL import Image
 
 from ..utils import weakproxy, cached_property
 from ..forms import convs, widgets

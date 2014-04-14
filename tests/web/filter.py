@@ -1,58 +1,28 @@
 # -*- coding: utf-8 -*-
 
+__all__ = ['Prefix', 'Match', 'Subdomain']
+
 import unittest
-import sys
-import os
-FRAMEWORK_DIR = os.path.abspath('../..')
-sys.path.append(FRAMEWORK_DIR)
-from insanities.web.core import Map, RequestHandler, STOP, Reverse, RequestContext
-from insanities.web.filters import *
-from insanities.web.filters import UrlTemplate
-from insanities.web.urlconvs import ConvertError
-from insanities.web.wrappers import *
-from insanities.web.http import Request
+from iktomi import web
+from webob import Response
 
-class UrlTemplateTests(unittest.TestCase):
 
-    def test_match_without_params(self):
-        'UrlTemplate match method without params'
-        ut = UrlTemplate('simple')
-        self.assertEqual(ut.match('simple'), (True, {}))
-        self.assertEqual(ut.match('/simple'), (False, {}))
+class WebHandler(unittest.TestCase):
 
-    def test_match_with_params(self):
-        'UrlTemplate match method with params'
-        ut = UrlTemplate('/simple/<int:id>')
-        self.assertEqual(ut.match('/simple/2'), (True, {'id':2}))
-        self.assertEqual(ut.match('/simple'), (False, {}))
-        self.assertEqual(ut.match('/simple/d'), (False, {}))
+    def test_interface(self):
+        self.assertRaises(NotImplementedError, web.WebHandler(), {}, {})
 
-    def test_match_from_begining_without_params(self):
-        'UrlTemplate match method without params (from begining of str)'
-        ut = UrlTemplate('simple', match_whole_str=False)
-        self.assertEqual(ut.match('simple'), (True, {}))
-        self.assertEqual(ut.match('simple/sdffds'), (True, {}))
-        self.assertEqual(ut.match('/simple'), (False, {}))
-        self.assertEqual(ut.match('/simple/'), (False, {}))
-
-    def test_match_from_begining_with_params(self):
-        'UrlTemplate match method with params (from begining of str)'
-        ut = UrlTemplate('/simple/<int:id>', match_whole_str=False)
-        self.assertEqual(ut.match('/simple/2'), (True, {'id':2}))
-        self.assertEqual(ut.match('/simple/2/sdfsf'), (True, {'id':2}))
-        self.assertEqual(ut.match('/simple'), (False, {}))
-        self.assertEqual(ut.match('/simple/d'), (False, {}))
-        self.assertEqual(ut.match('/simple/d/sdfsdf'), (False, {}))
-
-    def test_builder_without_params(self):
-        'UrlTemplate builder method (without params)'
-        ut = UrlTemplate('/simple')
-        self.assertEqual(ut(), '/simple')
-
-    def test_builder_with_params(self):
-        'UrlTemplate builder method (with params)'
-        ut = UrlTemplate('/simple/<int:id>/data')
-        self.assertEqual(ut(id=2), '/simple/2/data')
+    def test_repr(self):
+        # for coverage
+        '%r' % web.WebHandler()
+        '%r' % web.cases()
+        '%r' % web.request_filter(lambda e, d, n: None)
+        '%r' % web.match('/', 'index')
+        '%r' % web.method('GET')
+        '%r' % web.static_files('/prefix')
+        '%r' % web.prefix('/prefix')
+        '%r' % web.subdomain('name')
+        '%r' % web.namespace('name')
 
 
 class Prefix(unittest.TestCase):
@@ -60,70 +30,122 @@ class Prefix(unittest.TestCase):
     def test_prefix_root(self):
         '''Prefix root'''
 
-        def handler(r):
-            self.assertEqual(r.request.prefixed_path, '/')
+        def handler(env, data):
+            self.assertEqual(env._route_state.path, '/')
+            return Response()
 
-        app = Map(
-            match('/', 'index') | handler,
-            prefix('/docs') | Map(
-                match('/', 'docs') | handler,
-                match('/item', 'doc') | handler,
-                prefix('/tags') | Map(
-                    match('/', 'tags') | handler,
-                    match('/tag', 'tag') | handler
-                )
-            )
-        )
+        app = web.cases(
+            web.match('/', 'index') | handler,
+            web.prefix('/docs') | web.cases(
+                web.match('/', 'docs') | handler,
+                web.match('/item', 'doc') | handler,
+                web.prefix('/tags') | web.cases(
+                    web.match('/', 'tags') | handler,
+                    web.match('/tag', 'tag') | handler)))
 
-        def assertStatus(url, status):
-            rctx = RequestContext.blank(url)
-            self.assertEqual(app(rctx).response.status_int, status)
-
-        self.assert_(app(RequestContext.blank('/docs')) is STOP)
-        assertStatus('/docs/', 200)
-        self.assert_(app(RequestContext.blank('/docs/tags')) is STOP)
-        assertStatus('/docs/tags/',200)
-        self.assert_(app(RequestContext.blank('/docs/tags/asdasd')) is STOP)
+        self.assertEqual(web.ask(app, '/docs'), None)
+        self.assertEqual(web.ask(app, '/docs/').status_int, 200)
+        self.assertEqual(web.ask(app, '/docs/tags'), None)
+        self.assertEqual(web.ask(app, '/docs/tags/').status_int, 200)
+        self.assertEqual(web.ask(app, '/docs/tags/asdasd'), None)
 
     def test_prefix_leaf(self):
         '''Simple prefix'''
 
-        def handler(r):
-            self.assertEqual(r.request.prefixed_path, '/item')
+        def handler(env, data):
+            self.assertEqual(env._route_state.path, '/item')
+            return Response()
 
-        app = Map(
-            match('/', 'index') | handler,
-            prefix('/docs') | Map(
-                match('/', 'docs') | handler,
-                match('/item', 'doc') | handler,
-                prefix('/tags') | Map(
-                    match('/', 'tags') | handler,
-                    match('/tag', 'tag') | handler
-                )
-            )
-        )
+        app = web.cases(
+            web.match('/', 'index'),
+            web.prefix('/docs') | web.cases(
+                web.match('/', 'docs') | handler,
+                web.match('/item', 'doc') | handler,
+                web.prefix('/tags') | web.cases(
+                    web.match('/', 'tags') | handler,
+                    web.match('/tag', 'tag') | handler)))
 
-        rctx = RequestContext.blank('/docs/item')
-        self.assertEqual(app(rctx).response.status_int, 200)
+        self.assertEqual(web.ask(app, '/docs/item').status_int, 200)
+
+    def test_prefix_state(self):
+        '''Prefix state correctness'''
+
+        def handler(env, data):
+            return Response()
+
+        app = web.cases(
+            web.match('/', 'index'),
+            web.prefix('/docs') | web.namespace('doc') | web.cases(
+                web.match('/item', '') | handler,
+                web.prefix('/list') | web.cases(
+                    web.match('/item', 'list') | handler),
+                web.match('/other-thing', 'something') | handler
+                ),
+            web.match('/something', 'something') | handler)
+
+        self.assertEqual(web.ask(app, '/docs/something'), None)
+        self.assertEqual(web.ask(app, '/docs/list/something'), None)
+        self.assertEqual(web.ask(app, '/docs/list/other-thing'), None)
 
     def test_unicode(self):
         '''Routing rules with unicode'''
-        app = Map(
-            prefix(u'/հայերեն') | Map(
-                match(u'/%', 'percent')
+        # XXX move to urltemplate and reverse tests?
+        app = web.cases(
+            web.prefix(u'/հայերեն') | web.cases(
+                web.match(u'/%', 'percent') | (lambda e,d: Response())
             )
         )
         encoded = '/%D5%B0%D5%A1%D5%B5%D5%A5%D6%80%D5%A5%D5%B6/%25'
-        rctx = RequestContext.blank(encoded)
 
-        self.assertEqual(str(Reverse(app.urls, '')('percent')), encoded)
-        self.assertEqual(Reverse(app.urls, '')('percent').get_readable(), u'/հայերեն/%')
+        self.assertEqual(web.Reverse.from_handler(app).percent.as_url, encoded)
+        self.assertEqual(web.Reverse.from_handler(app).percent.as_url.get_readable(), u'/հայերեն/%')
 
-        self.assert_(app(rctx) is not STOP)
+        self.assertNotEqual(web.ask(app, encoded), None)
 
+        # ???
         # rctx have prefixes, so we need new one
-        rctx = RequestContext.blank(encoded)
-        self.assertEqual(app(rctx).response.status_int, 200)
+        self.assertEqual(web.ask(app, encoded).status_int, 200)
+
+    def test_prefix_with_zeros_in_int(self):
+        '''Simple prefix'''
+        from iktomi.web.url_converters import Converter, ConvertError
+
+        def handler(env, data):
+            return Response()
+
+        class ZeroInt(Converter):
+
+            def to_python(self, value, env=None):
+                try:
+                    value = int(value)
+                except ValueError:
+                    raise ConvertError(self.name, value)
+                else:
+                    return value
+
+            def to_url(self, value):
+                return str(value)
+
+        app = web.cases(
+              web.prefix('/section/<int:section_id>',
+                         convs={'int': ZeroInt}) |
+                web.match('/item', 'doc') |
+                handler)
+
+        #self.assertEqual(web.ask(app, '/section/1').status_int, 200)
+        self.assertEqual(web.ask(app, '/section/1/item').status_int, 200)
+        self.assertEqual(web.ask(app, '/section/001/item').status_int, 200)
+        # XXX this test fails because of bug in prefix handler:
+        # self.builder(**kwargs) - prefix is built from converted value and
+        # contains no zeros
+
+    def test_match_empty_pattern(self):
+        '''Test if prefix() works proper with empty patterns'''
+
+        r = Response()
+        app = web.prefix('') | web.match('/', 'index') | (lambda e,d: r)
+
+        self.assertEqual(web.ask(app, '/'), r)
 
 
 class Subdomain(unittest.TestCase):
@@ -131,42 +153,68 @@ class Subdomain(unittest.TestCase):
     def test_subdomain(self):
         '''Subdomain filter'''
 
-        def handler(r):
-            self.assertEqual(r.request.path, '/')
+        def handler(env, data):
+            self.assertEqual(env.request.path, '/')
+            return Response()
 
-        app = subdomain('host') | Map(
-            subdomain('') | match('/', 'index') | handler,
-            subdomain('k') | Map(
-                subdomain('l') | Map(
-                    match('/', 'l') | handler,
+        app = web.subdomain('host') | web.cases(
+            web.subdomain('') | web.match('/', 'index') | handler,
+            web.subdomain('k') | web.cases(
+                web.subdomain('l') | web.cases(
+                    web.match('/', 'l') | handler,
                 ),
-                subdomain('') | match('/', 'k') | handler,
-            )
-        )
-        app = Map(app)
+                web.subdomain('') | web.match('/', 'k') | handler))
 
-        def assertStatus(url, st):
-            rctx = RequestContext(Request.blank(url).environ)
-            self.assertEqual(app(rctx).response.status_int, st)
-
-        assertStatus('http://host/', 200)
-        assertStatus('http://k.host/', 200)
-        assertStatus('http://l.k.host/', 200)
-        assertStatus('http://x.l.k.host/', 200) # XXX: Is it right?
-        self.assert_(app(RequestContext.blank('http://x.k.host/')) is STOP)
-        self.assert_(app(RequestContext.blank('http://lk.host/')) is STOP)
-        self.assert_(app(RequestContext.blank('http://mhost/')) is STOP)
+        self.assertEqual(web.ask(app, 'http://host/').status_int, 200)
+        self.assertEqual(web.ask(app, 'http://k.host/').status_int, 200)
+        self.assertEqual(web.ask(app, 'http://l.k.host/').status_int, 200)
+        self.assertEqual(web.ask(app, 'http://x.l.k.host/').status_int, 200)
+        self.assert_(web.ask(app, 'http://x.k.host/') is None)
+        self.assert_(web.ask(app, 'http://lk.host/') is None)
+        self.assert_(web.ask(app, 'http://mhost/') is None)
 
     def test_unicode(self):
         '''IRI tests'''
-        app = Map(subdomain(u'рф') | subdomain(u'сайт') | match('/', 'site'))
+        app = web.subdomain(u'рф') | web.subdomain(u'сайт') | web.match('/', 'site') | (lambda e,d: Response() )
         encoded = 'http://xn--80aswg.xn--p1ai/'
-        self.assertEqual(Reverse(app.urls, '')('site').get_readable(), u'http://сайт.рф/')
-        self.assertEqual(str(Reverse(app.urls, '')('site')), encoded)
+        self.assertEqual(web.Reverse.from_handler(app).site.as_url.get_readable(), u'http://сайт.рф/')
+        self.assertEqual(web.Reverse.from_handler(app).site.as_url, encoded)
+        self.assertNotEqual(web.ask(app, encoded), None)
 
-        rctx = RequestContext.blank(encoded)
-        self.assert_(app(rctx) is not STOP)
-        self.assertEqual(app(rctx).response.status_int, 200)
+    def test_aliases(self):
+        def handler(env, data):
+            return Response(env.current_location + ' ' +
+                            env.root.domain1.as_url + ' ' +
+                            env.root.domain1.as_url.with_host() + ' ' +
+                            env.root.domain2.as_url + ' ' +
+                            env.root.domain2.as_url.with_host())
+        www = web.subdomain('', 'www')
+        app = web.subdomain('example.com', 'example.ru', 'example.com.ua') | web.cases(
+              web.subdomain('ru', None, primary=None) | web.cases(
+                  web.subdomain('moscow') | www | web.match('/', 'domain3'),
+                  www | web.match('/', 'domain1')
+                  ),
+              web.subdomain('en', 'eng') | www | web.match('/', 'domain2'),
+              )
+        app = app | handler
+        # XXX As for now .with_host() return primary domain, not the current one
+        #     It is easy to change the behaviour, but which behaviour is
+        #     correct?
+        self.assertEqual(web.ask(app, 'http://ru.example.com/').body,
+                'domain1 / http://example.com/ '
+                'http://en.example.com/ http://en.example.com/')
+
+        self.assertEqual(web.ask(app, 'http://www.ru.example.ru/').body,
+                'domain1 / http://example.com/ '
+                'http://en.example.com/ http://en.example.com/')
+
+        self.assertEqual(web.ask(app, 'http://www.example.ru/').body,
+                'domain1 / http://example.com/ '
+                'http://en.example.com/ http://en.example.com/')
+
+        self.assertEqual(web.ask(app, 'http://moscow.example.ru/').body,
+                'domain3 http://example.com/ http://example.com/ '
+                'http://en.example.com/ http://en.example.com/')
 
 
 class Match(unittest.TestCase):
@@ -174,70 +222,156 @@ class Match(unittest.TestCase):
     def test_simple_match(self):
         '''Check simple case of match'''
 
-        m = match('/first', 'first') | (lambda x: x)
+        app = web.match('/first', 'first') | (lambda e,d: Response())
 
-        rctx = RequestContext(Request.blank('/first').environ)
-        rctx = m(rctx)
-        self.assert_(rctx.response.status_int, 200)
-        rctx = RequestContext(Request.blank('/second').environ)
-        rctx = m(rctx)
-        self.assert_(rctx is STOP)
+        self.assertEqual(web.ask(app, '/first').status_int, 200)
+        self.assertEqual(web.ask(app, '/second'), None)
 
     def test_int_converter(self):
         '''Check int converter'''
 
-        def handler(r):
-            self.assertEqual(r.data.id, 42)
+        def handler(env, data):
+            self.assertEqual(data.id, 42)
+            return Response()
 
-        app = Map(
-            match('/first', 'first') | handler,
-            match('/second/<int:id>', 'second') | handler
-        )
+        app = web.cases(
+            web.match('/first', 'first') | handler,
+            web.match('/second/<int:id>', 'second') | handler)
 
-        rctx = RequestContext(Request.blank('/second/42').environ)
-        app(rctx)
+        web.ask(app, '/second/42')
 
     def test_multiple_int_convs(self):
         '''Check multiple int converters'''
 
-        def handler(r, id, param):
-            self.assertEqual(id, 42)
-            self.assertEqual(param, 23)
+        def handler(env, data):
+            self.assertEqual(data.id, 42)
+            self.assertEqual(data.param, 23)
+            return Response()
 
-        app = Map(
-            match('/first', 'first') | handler,
-            match('/second/<int:id>/<int:param>', 'second') | handler
-        )
+        app = web.cases(
+            web.match('/first', 'first') | handler,
+            web.match('/second/<int:id>/<int:param>', 'second') | handler)
 
-        rctx = RequestContext(Request.blank('/second/42/23').environ)
-        app(rctx)
-
-    def test_handler_with_param(self):
-        '''Check int converter with handler which accepts params'''
-
-        def handler(r, id):
-            self.assertEqual(id, 42)
-
-        app = Map(
-            match('/first', 'first') | handler,
-            match('/second/<int:id>', 'second') | handler
-        )
-
-        rctx = RequestContext(Request.blank('/second/42').environ)
-        app(rctx)
+        web.ask(app, '/second/42/23')
 
     def test_not_found(self):
         '''Check int converter with handler which accepts params'''
 
-        def handler(r, id):
-            pass
+        def handler(env, data):
+            return Response()
 
-        app = Map(
-            match('/first', 'first') | handler,
-            match('/second/<int:id>', 'second') | handler
-        )
+        app = web.cases(
+            web.match('/first', 'first') | handler,
+            web.match('/second/<int:id>', 'second') | handler)
 
-        rctx = app(RequestContext.blank('/second/42/'))
-        self.assert_(rctx is STOP)
-        rctx = app(RequestContext.blank('/second/42s'))
-        self.assert_(rctx is STOP)
+        self.assert_(web.ask(app, '/second/42/') is None)
+        self.assert_(web.ask(app, '/second/42s') is None)
+
+    def test_sane_exceptions(self):
+        # XXX what is this? 0_o
+        'Not yet completed test of sane exceptions'
+        @web.request_filter
+        def get_items(env, data, nxt):
+            return nxt(env, data)
+        def raise_exc(env, data):
+            raise Exception('somewhere deep inside')
+
+        app = web.prefix('/prefix') | web.match('/', '') | get_items | raise_exc
+        self.assertRaises(Exception, lambda: web.ask(app, '/prefix/'))
+
+    def test_handler_after_case(self):
+        '''Test if the handler next to cases is called'''
+
+        r = Response()
+        def handler(env, data):
+            return r
+
+        app = web.cases(
+            web.match('/first', 'first'),
+            web.match('/second/<int:id>', 'second')
+        ) | handler
+
+        self.assertEqual(web.ask(app, '/first'), r)
+        self.assertEqual(web.ask(app, '/second/2'), r)
+
+    def test_match_empty_pattern(self):
+        '''Test if match() works proper with empty patterns'''
+
+        r = Response()
+        app = web.prefix('/') | web.match('', 'index') | (lambda e,d: r)
+
+        self.assertEqual(web.ask(app, '/'), r)
+
+
+class Method(unittest.TestCase):
+
+    def test_head(self):
+        handler = web.method('GET')
+        self.assertEqual(handler._names, set(['GET', 'HEAD']))
+
+    def test_simple_match(self):
+        '''Method'''
+        from webob.exc import HTTPMethodNotAllowed
+
+        app = web.cases(
+                web.match('/', 'simple') | web.method('post'),
+                web.match('/second', 'second') | web.method('POST'),
+                web.match('/strict', 'strict') | web.method('post', strict=True)
+            ) | (lambda e,d: Response())
+
+        self.assertEqual(web.ask(app, '/'), None)
+        self.assertEqual(web.ask(app, '/', method='post').status_int, 200)
+        self.assertEqual(web.ask(app, '/second', method='post').status_int, 200)
+
+        self.assertRaises(HTTPMethodNotAllowed, lambda: web.ask(app, '/strict').status_int)
+        self.assertEqual(web.ask(app, '/strict', method='post').status_int, 200)
+
+    def test_by_method(self):
+        app = web.match('/') | web.by_method({
+            'DELETE': lambda e,d: Response('delete'),
+            ('POST', 'PUT'): lambda e,d: Response('post'),
+        })
+
+        self.assertEqual(web.ask(app, '/', method="PUT").body, 'post')
+        self.assertEqual(web.ask(app, '/', method="DELETE").body, 'delete')
+        self.assertEqual(web.ask(app, '/').status_int, 405)
+
+
+class Namespace(unittest.TestCase):
+
+    def test_namespace_with_dot(self):
+        app = web.cases(
+                web.namespace("english.docs.news") | web.match('/item', 'item'),
+                )
+        r = web.Reverse.from_handler(app)
+        self.assertEqual(r.english.docs.news.item.as_url, '/item')
+
+    def test_nested_namespaces(self):
+        def test_ns(env, data):
+            return env.namespace
+
+        app = web.prefix('/ns1', name="ns1") | \
+              web.prefix('/ns2', name="ns2") | \
+              web.match() | test_ns
+
+        self.assertEqual(web.ask(app, '/ns1/ns2'), 'ns1.ns2')
+
+    def test_current_location(self):
+        def test_ns(env, data):
+            return env.current_location
+
+        app = web.cases(
+            web.match('/', 'm1'),
+            web.prefix('/ns', name="ns1.ns2") | web.cases(
+                web.match(''),
+                web.match('/m2', 'm2'),
+            )
+        ) | test_ns
+        self.assertEqual(web.ask(app, '/'), 'm1')
+        self.assertEqual(web.ask(app, '/ns'), 'ns1.ns2')
+        self.assertEqual(web.ask(app, '/ns/m2'), 'ns1.ns2.m2')
+
+    def test_empty(self):
+        self.assertRaises(TypeError, web.namespace, '')
+
+# XXX tests for static_files needed!

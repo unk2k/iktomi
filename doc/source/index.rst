@@ -1,55 +1,52 @@
-.. insanities documentation master file, created by
-   sphinx-quickstart on Tue Jul  7 15:06:35 2009.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Iktomi
+==========
 
-Welcome to insanities's documentation!
-======================================
+.. What is Iktomi?
+.. ^^^^^^^^^^^^^^^^^^^
 
-Contents:
+Iktomi is a python package providing some basic tools for creating web applications.
+Iktomi is built on top of webob and supports Python 2.7.
 
-.. toctree::
-   :maxdepth: 2
+It contains few independent subpackages, you can use both, or just one of them:
 
-.. automodule:: insanities
+* **iktomi.web**, a flexible and extensible routing tool, suitable to dispatch HTTP
+  requests between various views (or controllers). 
+* **iktomi.forms**, a web forms validation and rendering tool.
+* **iktomi.cli**, a layer for building command-line utilities.
+* **iktomi.templates**, an adaptation layer for template engines, 
+  in particular, for jinja2.
+* **iktomi.db**, database utilities, in particular, sqlalchemy types, 
+  collections, declarative mixins.
 
+Some things are dedicated to package **iktomi.unstable**. This means the interfaces are 
+unstable or unclear in some point, and we do not want to gurarantee their permanence 
+for a long time.
+
+Routing
+^^^^^^^
+
+* :ref:`Creating simple app <iktomi-web-tutorial>`
+* :ref:`API reference <iktomi-web-api>`
+.. * :ref:`How it works <iktomi-web>`
 
 Forms
 ^^^^^
 
-.. automodule:: insanities.forms
+* :ref:`Form processing <iktomi-forms-tutorial>`
+* :ref:`API reference <iktomi-forms-api>`
+.. * :ref:`How it works <iktomi-forms>`
 
-   * :ref:`Forms <insanities-forms>`
-   * :ref:`Fields <insanities-fields>`
-   * :ref:`Converters <insanities-forms-convs>`
-   * :ref:`Form permissions <insanities-forms-perms>`
-   * :ref:`Files`
-   * :ref:`Widgets <insanities-forms-widgets>`
-   * :ref:`Media <insanities-forms-media>`
-
-
-Web
+Cli
 ^^^
 
-.. automodule:: insanities.web
+* :ref:`Development server <iktomi-cli-app>`
+* :ref:`FastCGI server <iktomi-cli-fcgi>`
+* :ref:`Sqlalchemy management utilities <iktomi-cli-sqla>`
 
-   * :ref:`HTTP <insanities-web-http>`
-   * :ref:`Routing <insanities-web-routing>`
-   * :ref:`URL converters <insanities-web-urlconvs>`
+Utilities
+^^^^^^^^^
 
+Unsorted stuff for make iktomi working.
 
-Other
-^^^^^
-
-* :ref:`Internationalization <insanities-i18n>`
-* :ref:`Management <insanities-management>`
-* :ref:`Utilities <insanities-utils>`
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+* :ref:`Utilities <iktomi-utils>`
 

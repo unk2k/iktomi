@@ -2,9 +2,9 @@
 #
 
 # You can set these variables from the command line.
-SPHINXOPTS    =
-SPHINXBUILD   = sphinx-build
-PAPER         =
+SPHINXOPTS    ?=
+SPHINXBUILD   ?= sphinx-build
+PAPER         ?=
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
@@ -60,9 +60,9 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in build/qthelp, like this:"
-	@echo "# qcollectiongenerator build/qthelp/insanities.qhcp"
+	@echo "# qcollectiongenerator build/qthelp/iktomi.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile build/qthelp/insanities.qhc"
+	@echo "# assistant -collectionFile build/qthelp/iktomi.qhc"
 
 latex:
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) build/latex

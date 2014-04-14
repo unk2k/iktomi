@@ -1,0 +1,50 @@
+{% macro hint(field) %}
+  {%- if field.hint and not field.widget.renders_hint %}
+    <span class="hint">{{ field.hint }}</span>
+  {%- endif -%}
+{% endmacro -%}
+
+{% macro label(field) %}
+  {%- if field.label %}
+    <label for="{{ field.id }}">{{ field.label }}</label>
+  {%- endif -%}
+{% endmacro -%}
+
+{% for field in form.fields %}
+{% if field.readable %}
+  {% if field.error %}
+  <tr class="error-row">
+    <td colspan="2">
+      <span class="error">{{ field.error }}</span>
+    </td>
+  </tr>
+  {% endif %}
+  <tr class="form-row{% if loop.last %} last{% endif %}{% if loop.first %} first{% endif %}{% if field.classname %} {{ field.classname }}{% endif %}"
+      {%- if field.widget.render_type == 'hidden' %} style="display:none"{% endif %}>
+  {% if field.widget.render_type == 'checkbox' %}
+    <th></th>
+    <td>
+      {{ field.widget.render()|safe }}
+      {{ label(field) }}
+      {{ hint(field) }}
+    </td>
+  {% elif field.widget.render_type == 'hidden' %}
+    <td colspan="2">{{ field.widget.render()|safe }}</td>
+  {% elif field.widget.render_type == 'full-width' %}
+    <td class="full-width" colspan="2">
+      {{ label(field) }}
+      {{ field.widget.render()|safe }}
+      {{ hint(field) }}
+    </td>
+  {% else %}
+    <th>
+      {{ label(field) }}
+    </th>
+    <td>
+      {{ field.widget.render()|safe }}
+      {{ hint(field) }}
+    </td>
+  {% endif %}
+  </tr>
+{% endif %}
+{% endfor %}

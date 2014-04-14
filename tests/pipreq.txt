@@ -1,6 +1,0 @@
-jinja2
-html5lib
-simplejson
-pytils
-webob
-polib

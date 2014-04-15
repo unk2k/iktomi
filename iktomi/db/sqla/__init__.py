@@ -52,22 +52,16 @@ def session_maker(databases, query_cls=Query, models_location='models',
     models_location - put models filename name as 'models'
     '''
     engine_params = engine_params or {}
-    metadata = import_string(models_location, 'metadata')
-    engine = create_engine(uri, **engine_params)
-    engine.logger = logging.getLogger('sqlalchemy.engine')
-    for table in metadata.sorted_tables:
-        binds[table] = engine
     session_params = dict(session_params or {})
     session_params.setdefault('autoflush', False)
     if isinstance(databases, basestring):
         binds = {}
         metadata = import_string(models_location, 'metadata')
-        engine = create_engine(uri, **engine_params)
+        engine = create_engine(databases, **engine_params)
         engine.logger = logging.getLogger('sqlalchemy.engine')
         for table in metadata.sorted_tables:
             binds[table] = engine
-        return orm.sessionmaker(class_=session_class, query_cls=query_cls,
-                                binds=binds, **session_params)
-    binds = multidb_binds(databases, models_location, engine_params=engine_params)
+    else:
+        binds = multidb_binds(databases, models_location, engine_params=engine_params)
     return orm.sessionmaker(class_=session_class, query_cls=query_cls,
                             binds=binds, **session_params)

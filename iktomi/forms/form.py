@@ -114,7 +114,7 @@ class Form(object):
             if clean:
                 clean(self)
         except ValidationError, e:
-            e.fill_errors(self.field)
+            self.errors['form'] = e.message
         return self.is_valid
 
     def get_field(self, name):

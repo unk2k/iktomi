@@ -111,6 +111,9 @@ class Form(object):
                         if clean:
                             field.python_data.update(clean(self, field.python_data))
             clean = getattr(self, 'clean', None)
+        except ValidationError, e:
+            self.errors[field.input_name] = e.message
+        try:
             if clean:
                 clean(self)
         except ValidationError, e:

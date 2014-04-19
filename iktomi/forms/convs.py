@@ -119,9 +119,11 @@ class Converter(object):
         '''
         try:
             value = self.to_python(value)
-            for v in self.validators_and_filters:
-                value = v(self, value)
-
+            for validator in self.validators_and_filters:
+                if hasattr(validator, 'to_python'):
+                    value = validator.to_python(value)
+                else:
+                    value = validator(self, value)
             if self.required and self._is_empty(value):
                 raise ValidationError(self.error_required)
         except ValidationError, e:

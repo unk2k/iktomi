@@ -5,6 +5,7 @@ from . import convs
 from .perms import DEFAULT_PERMISSIONS
 from .media import FormMedia
 from .fields import FieldBlock
+from .convs import ValidationError
 
 
 class FormEnvironment(object):
@@ -101,6 +102,22 @@ class Form(object):
                 # readonly field
                 value = self.python_data[field.name]
                 field.set_raw_value(self.raw_data, field.from_python(value))
+
+        try:
+            if self.is_valid:
+                for field in self.fields:
+                    if field.writable:
+                        clean = getattr(self, 'clean_%s' % field.name, None)
+                        if clean:
+                            field.python_data.update(clean(self, field.python_data))
+            clean = getattr(self, 'clean', None)
+        except ValidationError, e:
+            self.errors[field.input_name] = e.message
+        try:
+            if clean:
+                clean(self)
+        except ValidationError, e:
+            self.errors['form'] = e.message
         return self.is_valid
 
     def get_field(self, name):

@@ -110,12 +110,10 @@ class Form(object):
                         clean = getattr(self, 'clean_%s' % field.name, None)
                         if clean:
                             field.python_data.update(clean(self, field.python_data))
-            clean = getattr(self, 'clean', None)
         except ValidationError, e:
             self.errors[field.input_name] = e.message
         try:
-            if clean:
-                clean(self)
+            self.clean()
         except ValidationError, e:
             self.errors['form'] = e.message
         return self.is_valid
@@ -151,3 +149,9 @@ class Form(object):
         if compact:
             data = MultiDict([(k, v) for k, v in data.items() if v])
         return data
+
+    def clean(self):
+        '''
+        clean form method
+        '''
+        pass

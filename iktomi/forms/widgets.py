@@ -125,7 +125,7 @@ class Select(Widget):
 
     def get_options(self, value):
         options = []
-        if not self.multiple and (value == '' or not self.field.conv.required):
+        if not self.multiple and not self.field.conv.required:
             options = [{'value': '',
                         'title': self.null_label,
                         'selected': value in (None, '')}]

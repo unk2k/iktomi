@@ -42,11 +42,13 @@ class App(Cli):
     'Development application'
     format = '%(levelname)s [%(name)s] %(message)s'
 
-    def __init__(self, app, shell_namespace=None, extra_files=None, bootstrap=None):
+    def __init__(self, app, shell_namespace=None, extra_files=None,
+                 bootstrap=None, shutdown=None):
         self.app = app
         self.shell_namespace = shell_namespace or {}
         self.extra_files = extra_files
         self.bootstrap = bootstrap
+        self.shutdown = shutdown
 
     def command_serve(self, host='', port='8000', level='debug'):
         logging.basicConfig(level=getattr(logging, level.upper()), format=self.format)
@@ -73,6 +75,8 @@ class App(Cli):
             logger.info('Stoping dev-server...')
             server_thread.running = False
             server_thread.join()
+            if self.shutdown:
+                self.shutdown()
             sys.exit()
 
     def command_shell(self):

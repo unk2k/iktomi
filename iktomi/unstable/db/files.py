@@ -13,12 +13,13 @@ from ...utils import cached_property
 
 class BaseFile(object):
 
-    def __init__(self, root, name, manager=None):
+    def __init__(self, root, name, original_name=None, manager=None):
         '''@root depends on environment of application and @name uniquely
         identifies the file.'''
         self.root = root
         self.name = name
         self.manager = manager
+        self.original_name = original_name
 
     @property
     def path(self):
@@ -149,12 +150,12 @@ class FileManager(BaseFileManager):
         name = os.urandom(8).encode('hex') + ext
         return TransientFile(self.transient_root, name, self)
 
-    def get_transient(self, name):
+    def get_transient(self, name, original_name=None):
         '''Restores TransientFile object with given name.
         Should be used when form is submitted with file name and no file'''
         # security checks: basically no folders are allowed
         assert not ('/' in name or '\\' in name or name[0] in '.~')
-        transient = TransientFile(self.transient_root, name, self)
+        transient = TransientFile(self.transient_root, name, original_name, self)
         if not os.path.isfile(transient.path):
             raise OSError(errno.ENOENT, 'Transient file has been lost',
                           transient.path)

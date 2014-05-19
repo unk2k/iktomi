@@ -77,7 +77,7 @@ class FormMediaAtom(object):
 
     def render(self):
         '''Renders media item to HTML'''
-        return self.holder.env.template.render('media/%s.html' % self.macro, 
+        return self.holder.env.template.render('media/%s' % self.macro, 
                                                data=self.data,
                                                env=self.holder.env)
 

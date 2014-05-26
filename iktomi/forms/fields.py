@@ -60,6 +60,7 @@ class BaseField(object):
         Creates current object's copy with extra constructor arguments passed.
         '''
         params = dict(self._init_kwargs, **kwargs)
+        params['widget'] = params['widget'](**kwargs)
         return self.__class__(**params)
 
     @property

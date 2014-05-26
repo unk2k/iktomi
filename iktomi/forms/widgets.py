@@ -61,6 +61,8 @@ class Widget(object):
         Subclasses can override it.
         '''
         value = self.get_raw_value()
+        if not value and self.field.get_initial():
+            value = self.field.get_initial()
         return dict(widget=self,
                     field=self.field,
                     value=value,

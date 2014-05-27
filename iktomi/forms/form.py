@@ -109,7 +109,7 @@ class Form(object):
                     if field.writable:
                         clean = getattr(self, 'clean_%s' % field.name, None)
                         if clean:
-                            field.python_data.update(clean(self, field.python_data))
+                            self.python_data[field.name] = clean(self.python_data[field.name])
         except ValidationError, e:
             self.errors[field.input_name] = e.message
         try:

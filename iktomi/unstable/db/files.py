@@ -87,7 +87,7 @@ class BaseFileManager(object):
 
     def get_persistent(self, name, cls=PersistentFile):
         assert name and not ('..' in name or name[0] in '~/'), name
-        persistent = cls(self.persistent_root, name, self)
+        persistent = cls(self.persistent_root, name, original_name=None, manager=self)
         return persistent
 
     def get_persistent_url(self, file, env=None):

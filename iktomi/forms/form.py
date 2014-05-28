@@ -44,7 +44,7 @@ class Form(object):
         #       you need to provide values for all fields that are in that
         #       aggregated field, including `None` as empty values.
         self.initial = initial
-        self.python_data = initial.copy()
+        self.python_data = {} #initial.copy() XXX python_data must have only form data
         # clone all fields
         self.fields = [field(parent=self) for field in self.fields]
 

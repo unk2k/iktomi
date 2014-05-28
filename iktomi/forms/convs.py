@@ -92,8 +92,10 @@ class Converter(object):
     '''
 
     # obsolete parameters from previous versions
+    # _obsolete = frozenset(['max_length', 'min_length', 'null', 'min', 'max',
+    #                        'multiple', 'initial'])
     _obsolete = frozenset(['max_length', 'min_length', 'null', 'min', 'max',
-                           'multiple', 'initial'])
+                           'initial'])
     required = False
     multiple = False
 

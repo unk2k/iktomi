@@ -17,9 +17,10 @@ _all2 = locals().keys()
 
 class ValidationError(Exception):
 
-    def __init__(self, message=None, by_field=None):
+    def __init__(self, message=None, by_field=None, **message_kwargs):
         self.message = message
         self.by_field = by_field or {}
+        self.message_kwargs = message_kwargs
 
     def translate(self, env, message):
         if isinstance(message, M_):
@@ -27,7 +28,7 @@ class ValidationError(Exception):
                                  unicode(message.plural),
                                  message.count)
             return trans % message.format_args
-        return env.gettext(message)
+        return env.gettext(message) % self.message_kwargs
 
     def fill_errors(self, field):
         form = field.form
@@ -193,16 +194,30 @@ class Converter(object):
 
 class validator(object):
     'Function decorator'
-    def __init__(self, message):
+    def __init__(self, message, **message_kwargs):
         self.message = message
+        self.message_kwargs = message_kwargs
+
     def __call__(self, func):
         def wrapper(conv, value):
             if not func(conv, value):
-                raise ValidationError(self.message)
+                raise ValidationError(self.message, **self.message_kwargs)
             return value
         return wrapper
 
 # Some useful validators
+
+
+def noint():
+    message = N_('This field not accept integers')
+
+    @validator(message)
+    def wrapper(conv, value):
+        if any(c.isdigit() for c in value):
+            return False
+        return True
+    return wrapper
+
 
 def length(min_length, max_length):
     'Sting length constraint'
@@ -213,9 +228,9 @@ def length(min_length, max_length):
     else:
         message = N_('length should be between %(min)d and %(max)d symbols')
 
-    message = message % dict(min=min_length, max=max_length)
+    message_kwargs = dict(min=min_length, max=max_length)
 
-    @validator(message)
+    @validator(message, **message_kwargs)
     def wrapper(conv, value):
         if not value:
             # it meens that this value is not required
@@ -235,10 +250,10 @@ def limit(min_length, max_length):
 
 def between(min_value, max_value):
     'Numerical values limit'
-    message = N_('value should be between %(min)d and %(max)d') % \
-                    dict(min=min_value, max=max_value)
+    message = N_('value should be between %(min)d and %(max)d')
+    message_kwargs = dict(min=min_value, max=max_value)
 
-    @validator(message)
+    @validator(message, **message_kwargs)
     def wrapper(conv, value):
         if value is None:
             # it meens that this value is not required
@@ -296,8 +311,8 @@ class Char(CharBased):
             if isinstance(self.regex, basestring):
                 regex = re.compile(self.regex, re.U)
             if not regex.match(value):
-                error = self.error_regex % {'regex': self.regex}
-                raise ValidationError(error)
+                error = self.error_regex
+                raise ValidationError(error, regex=self.regex)
         return value
 
     def from_python(self, value):
@@ -413,7 +428,8 @@ class BaseDatetime(CharBased):
         try:
             return self.convert_datetime(value)
         except ValueError:
-            raise ValidationError(self.error_wrong_format)
+            raise ValidationError(self.error_wrong_format,
+                                  readable_format=self.readable_format)
 
 
 class Datetime(BaseDatetime):

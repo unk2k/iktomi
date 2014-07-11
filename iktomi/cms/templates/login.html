@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Вход</title>
+    <link rel="stylesheet" type="text/css" href="{{ CMS_STATIC_URL + 'css/main.css' }}">
+    <link rel="stylesheet" type="text/css" href="{{ CMS_STATIC_URL + 'css/top_menu.css' }}">
+    <link rel="stylesheet" type="text/css" href="{{ CMS_STATIC_URL + 'css/buttons-flat.css' }}">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <script type="text/javascript" src="{{ CMS_STATIC_URL + 'js/mootools-core-1.4.5-full-compat-yc.js' }}"></script>
+    <script type="text/javascript">
+    window.addEvent('domready', function(){
+      document.body.getElement('form').addEvent('submit', function(e){
+        e.preventDefault();
+
+        new Request.JSON({
+          url: this.getProperty('action'),
+          onSuccess: function(resp){
+            var err = document.getElement('.error');
+            if (resp.success){
+              err.setStyle('display', 'none');
+              window.location.reload();
+            } else {
+              err.setStyle('display', '');
+            }
+          }
+        }).post(this);
+
+      });
+    });
+    </script>
+  </head>
+  <body>
+
+    <div class="navigation"></div>
+
+    <form action="{{ env.root.login }}" method="POST" style="position: absolute; width: 100%; top: 50%; margin-top: -100px;">
+
+      <div style="margin: 0px auto; width: 250px;">
+        <h1>Вход</h1>
+
+        <p class="error" style="display: none;  margin-top: 20px;">Неверное имя пользователя или пароль</p>
+
+        <table style="width: 100%; margin-top: 20px;">
+        {% for field in form.fields %}
+          {% if field.error %}
+            <tr>
+              <td width="20%"></td>
+              <td>
+                 <span class="error">{{ field.error }}</span>
+              </td>
+            </tr>
+          {% endif %}
+            <tr>
+              <td width="30%" align="left">
+                 <label for="id-{{ field.name }}">{{ field.label }}</LABEL>
+              </td>
+              <td width="70%" align="right">
+                 {{- field.widget.render() -}}
+              </td>
+            </tr>
+        {% endfor %}
+        </table>
+
+        <button type="submit" class="button" style="display: block; width: 100%; box-sizing: border-box; margin-top: 20px;">войти</button>
+      </div>
+
+    </form>
+
+  </body>
+</html>
+

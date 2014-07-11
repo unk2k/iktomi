@@ -1,0 +1,50 @@
+a.remove {
+    background: url("../images/reset.gif") no-repeat scroll left center transparent;
+    color: #990000;
+    padding-left: 12px;
+    text-decoration: none;
+}
+.progress_box{
+    width: 300px;
+    height: 20px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    background-color: #ddd;
+}
+.progress_percent{
+    height: 20px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    background-color: #77d;
+}
+
+[data-disabled="disabled"] input{
+    display: none;
+    }
+
+.thumbnail-container{
+    position: relative;
+    width: auto;
+    display: inline-block;
+    overflow: hidden;
+    }
+  .thumbnail-container .source-image{
+    opacity: 0.5;
+    }
+  .thumbnail-container .icon-crop{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      }
+  .thumbnail{
+      max-width: 1000px;
+      max-height: 600px;
+      }
+  .thumbnail.has-source{
+      position: absolute;
+      outline: 1px solid #000;
+      }
+
+.no-upload input[type=file]{
+    display: none;
+    }

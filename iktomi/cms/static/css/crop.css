@@ -1,0 +1,94 @@
+.cropper{
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  }
+.cropper .selected-area{
+  position: absolute;
+  top:0;
+  left: 0;
+  overflow: hidden;
+  cursor: move;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  cursor: grab;
+  outline: 1px solid #000;
+  }
+.cropper .selected-area.dragging{
+  cursor: move;
+  }
+.cropper .selected-area img{
+  position: absolute; top:0; left: 0;
+  }
+.cropper .source-image{
+  opacity: 0.5;
+  }
+
+.cropper .top-left-area,
+.cropper .top-right-area,
+.cropper .bottom-left-area,
+.cropper .bottom-right-area,
+.cropper .top-area,
+.cropper .bottom-area,
+.cropper .left-area,
+.cropper .right-area {
+  position: absolute;
+}
+.cropper .left-area,
+.cropper .right-area {
+  width: 20px;
+  top: 20px;
+  bottom: 20px;
+  }
+.cropper .top-area,
+.cropper .bottom-area {
+  left:20px;
+  right:20px;
+  height: 20px;
+  }
+.cropper .top-area {
+  top: 0;
+  cursor: n-resize;
+  }
+.cropper .bottom-area {
+  bottom: 0;
+  cursor: s-resize;
+  }
+.cropper .left-area {
+  left: 0;
+  cursor: w-resize;
+  }
+.cropper .right-area {
+  right: 0;
+  cursor: e-resize;
+  }
+
+.cropper .top-left-area,
+.cropper .top-right-area,
+.cropper .bottom-left-area,
+.cropper .bottom-right-area {
+  width: 20px;
+  height: 20px;
+  }
+.cropper .top-left-area {
+  top: 0;
+  left: 0;
+  cursor: nw-resize;
+  }
+.cropper .top-right-area {
+  top: 0;
+  right: 0;
+  cursor: ne-resize;
+  }
+.cropper .bottom-left-area {
+  bottom: 0;
+  left: 0;
+  cursor: sw-resize;
+  }
+.cropper .bottom-right-area {
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
+  }
+
+

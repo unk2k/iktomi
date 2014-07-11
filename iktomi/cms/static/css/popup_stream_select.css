@@ -1,0 +1,141 @@
+.popup .table td,
+.popup .table th {
+  background: transparent;
+}
+
+.popup .line,
+.popup .line div {
+  background: transparent;
+  border: none;
+}
+
+.popup .content,
+.popup .itemlist {
+  padding: 0;
+}
+
+.popup .item td:first {
+  padding-left: 10px;
+}
+
+.popup .item.selected td:first-child {
+  background-image: url(../images/popup_stream_selected.png);
+  background-repeat: repeat-y;
+  background-position: 0px 0px;
+}
+
+.popup-select .w-buttons,
+.w-popup-stream-select .w-buttons {
+  overflow: hidden;
+}
+.popup-select>div,
+.w-popup-stream-select>div {
+    display: inline-block;
+    vertical-align: top;
+    }
+
+.popup-select .w-buttons .button,
+.w-popup-stream-select .w-buttons .button {
+  float: left;
+}
+
+.w-popup-stream-select-items {
+  margin: 5px 0 0 0;
+  border-spacing: 0px;
+  border: 1px solid #dddddd;
+}
+
+  .w-popup-stream-select-items td,
+  .w-popup-stream-select-items th {
+    margin: 0;
+    padding: 2px 6px;
+  }
+
+  .w-popup-stream-select-items .w-control-cell {
+    text-align: center;
+    }
+
+    .w-popup-stream-select-items .up-btn,
+    .w-popup-stream-select-items .down-btn {
+      cursor: pointer;
+      font-size: 130%;
+      text-decoration: none;
+    }
+
+    .w-popup-stream-select-items .up-btn:hover,
+    .w-popup-stream-select-items .down-btn:hover {
+      background: #fefeb0;
+    }
+
+    .w-popup-stream-select-items .up-btn {
+      margin-right: 5px;
+    }
+
+    .w-popup-stream-select-items .item:last-child .down-btn,
+    .w-popup-stream-select-items .item:first-child .up-btn {
+      visibility: hidden;
+    }
+
+    /*.w-popup-stream-select-items a.remove {
+      background: url(../images/reset.gif) no-repeat left;
+      padding-left: 12px;
+      color: #990000;
+      text-decoration: none;
+      cursor: pointer;
+    }*/
+
+  .empty .w-popup-stream-select-items,
+  .w-popup-stream-select-items .hide-in-popup-stream-select {
+    display: none;
+  }
+  .w-popup-stream-select-items .field_locked,
+  .w-popup-stream-select-items .field_has_unpublished_changes{
+    width: 16px;
+    padding: 0;
+    }
+  .w-popup-stream-select-items .field_locked div,
+  .w-popup-stream-select-items .field_has_unpublished_changes div {
+    width: 16px;
+    height: 16px;
+    background-size: 16px 16px;
+    }
+    .w-popup-stream-select-items .dragable tr{
+      background: #030303;
+      }
+    .w-popup-stream-select-items .dragable td{
+      left: 0px;
+      position: relative;
+      border-top: 0px;
+      border-bottom: 0px;
+      -webkit-transition: left .3s ease;
+      -moz-transition: left .3s ease;
+      transition: left .3s ease;
+      }
+
+
+    .w-popup-stream-select-items tr.dragged td,
+    .w-popup-stream-select-items tr:active td{
+          left: 10px;
+          border-top: 2px solid #030303;
+          border-bottom: 2px solid #030303;
+          -webkit-transition: left .5s ease;
+          -moz-transition: left .5ms ease;
+          }
+
+.w-popup-stream-select-items .field_has_unpublished_changes,
+.w-popup-stream-select-items .field_locked {
+    display: none;
+    }
+
+.popup .buttons__save-hidden{
+  display: none;
+  }
+.popup .item-form{
+  min-width: 900px;
+  }
+.popup .buttons .action-delete{
+  display: none;
+  }
+.popup .autosave-status{
+  top: -8px;
+  }

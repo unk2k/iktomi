@@ -1,0 +1,20 @@
+<div class="init-block" data-block-name="title" data-title="{{ title }}"></div>
+<div class="init-block" data-block-name="menu" data-menu="{{ menu }}"></div>
+
+<div style="margin: 0 50px 0 80px">
+  <h1>Действительно хотите удалить объект &laquo;<a href="{{ item_url }}">{{ item|escape }}</a>&raquo;?</h1>
+  {%- if referers %}
+    <h3>На объект &laquo;<a href="{{ item_url }}">{{ item|escape }}</a>&raquo; ссылаются:</h3>
+    <ul>
+      {%- for referer, referer_url in referers.items() -%}
+        <li><a href="{{ referer_url }}">{{ referer|escape }}</a></li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  <form method="post" action="{{ form_url }}" class="delete-form" onsubmit="generalFormSubmit(this); return false;" style="margin-top: 30px;">
+    <a href="{{ item_url }}">вернуться к редактированию</a>
+    <button class="button icon-delete" style="margin-left: 40px" type="submit">Удалить</button>
+  </form>
+
+</div>

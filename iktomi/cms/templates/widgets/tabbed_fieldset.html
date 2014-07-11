@@ -1,0 +1,58 @@
+{% macro render_subfield(field, loop) %}
+{%- set changed = field.form.changed_fields is defined and 
+                  field.input_name in field.form.changed_fields %}
+{%- set widget = field.widget -%}
+<div class="form-row
+            {%- if changed %} changed-after-publication{% endif %}
+            {%- if field.error %} with-error{% endif %}
+            {%- if field.classname %} {{ field.classname }}{% endif %}"
+     {%- if widget.render_type == 'hidden' %} style="display: none"{% endif %}>
+    {%- if field.error -%}
+      <div class="error">{{ field.error }}</div>
+    {%- endif %}
+
+    {%- if widget.render_type == 'checkbox' %}
+      {{- widget.render()|safe -}}
+      {%- if field.label -%}
+        <label for="{{ field.id }}">{{ field.label }}</label>
+      {%- endif -%}
+    {%- elif widget.render_type == 'hidden' %}
+      {{ widget.render()|safe }}
+    {%- elif widget.render_type == 'full-width' %}
+      <div class="full-width">
+        {% if field.label %}
+        <p class="th"><label for="{{ field.id }}">{{ field.label }}</label></p>
+        {% endif %}
+        {{ widget.render()|safe }}
+      </div>
+    {%- else %}
+      {%- if field.label %}
+        <div class="form-label" for="{{ field.id }}"><label>{{ field.label }}</label></div>
+      {%- endif %}
+      {{- widget.render()|safe }}
+    {%- endif %}
+</div>
+{%- endmacro -%}
+
+<div class="init-block fieldset tabbed_fieldset"
+       id="{{ field.input_name }}-container"
+       data-block-name="tabbed-fieldset"
+       data-config="{{ field.json_config }}">
+  {% if field.common_fields %}
+    {% for subfield in field.common_fields %}
+      {{ render_subfield(field.get_field(subfield), loop) }}
+    {% endfor %}
+  {% endif %}
+  {% if field.tabbed_fields %}
+    <div class="switchers">
+      {% for tab in field.tabbed_fields %}
+        <span>{{ tab.tab }}</span>
+      {% endfor %}
+    </div>
+    <div class="tabbed_content fieldset">
+      {% for subfield in field.tabbed_fields_list %}
+        {{ render_subfield(field.get_field(subfield), loop) }}
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

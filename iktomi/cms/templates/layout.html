@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    {% block title %}
+    <title>{{ title|default('Административный интерфейс')|striptags }}</title>
+    {% endblock %}
+
+    <script type="text/javascript"> window.CMS_STATIC_URL = "{{ CMS_STATIC_URL }}"; </script>
+
+    {{ packed_css_tag() }}
+    {{ packed_js_tag() }}
+
+    {% block extrahead %}
+    {% endblock %}
+  </head>
+  <body>
+    <div class="navigation">
+      <div class="links">
+        {% if user %}
+        <form action="{{ url_for('logout') }}" method="POST">
+          <span class="links__link user">Привет, 
+            <b>
+              {{ user.name }}
+            {%- if context.user_tray is defined and context.user_tray %}
+              <a href="{{ url_for("tray", tray=context.user_tray.id) }}" class="tray-count" title="Рабочая папка пользователя">
+                {{ context.user_tray.object_count }}
+              </a>
+            {%- endif -%}
+            </b>
+
+          </span>
+          <a class="quit" onclick="this.getParent('form').submit();return false" href="" title="Завершить сеанс">Завершить сеанс</a>
+        </form>
+        {% else %}
+          <div>
+            <a href="{{ url_for('login') }}">Авторизация</a>
+          </div>
+        {% endif %}
+      </div>
+      {{ context.top_menu.render() }}
+      <div style="clear: both"></div>
+    </div>
+    {%- if context.item_trays is defined and context.users is defined -%}
+    <div class="tray-popup init-block"
+         data-url="{{ env.url_for('put_to_tray') }}"
+         data-user-url="{{ env.url_for('put_to_user_tray') }}"
+         data-tray-url="{{ env.url_for('tray', tray='TRAY_ID') }}"
+         data-block-name="tray-popup" style="display: none">
+      <div>
+        <label style="vertical-align: top">
+          Комментарий:
+          <textarea class="tray-popup__comment"></textarea>
+        </label>
+      </div>
+      <div>
+        Добавить в рабочую папку пользователю
+        <select class="tray-popup__user">
+          {%- for u in context.users -%}
+            <option value="{{ u.id }}"{% if u == user %} selected{% endif %}>
+                {{- u.name or u.login -}}
+                {% if u == user %} (текущий пользователь){% endif -%}
+            </option>
+          {%- endfor -%}
+        </select>
+        <button class="button tray-popup__to-user">Ок</button>
+      </div>
+    </div>
+    {% endif %}
+
+    <div id="app-content">
+      {#% block content %}{% endblock %#}
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+  </body>
+</html>

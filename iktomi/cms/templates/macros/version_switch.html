@@ -1,0 +1,79 @@
+{% macro version_switch(published_url, working_url, front_version, published_version_is_unpublished) %}
+  <div class="switch version-switch init-block{%- if published_version_is_unpublished %} unpublished{% endif %}" data-block-name="version-switcher" data-published-version-url="{{ published_url }}" data-working-version-url="{{ working_url }}" title="Версии">
+    <input type="checkbox" class="switch-checkbox" id="switcher" {%- if not front_version %}checked{% endif %} />
+    <label class="switch-label version-switch-label" for="switcher">
+      <div class="switch-inner version-switch-inner"></div>
+      <div class="switch-switch version-switch-switch"></div>
+
+      {%- if front_version %}
+          {%- if published_version_is_unpublished %}
+              {% set current_version_title = "Неопубликованная версия" %}
+          {%- else %}
+              {% set current_version_title = "Опубликованная версия" %}
+          {% endif %}
+      {%- else %}
+          {% set current_version_title = "Рабочая версия" %}
+      {% endif %}
+      <div class="current-version-title-wrapper">
+          <span class="current-version-title">{{ current_version_title }}</span>
+      </div>
+
+      <div class="version-switch-off-label"></div>
+      <div class="version-switch-on-label"></div>
+    </label>
+  </div>
+{% endmacro %}
+
+{% macro item_dbs(stream, item, url_name="item") %}
+  {% for version, version_name in stream.versions %}
+    {% set lang_item = item._item_version(version) %}
+    {%- set absent = not lang_item or (lang_item.state is defined and lang_item.state in (item.ABSENT, item.DELETED)) %}
+    <a class="stream-flag
+              {%- if version == env.version %} selected{% endif %}
+              {%- if absent %} absent{% endif %}"
+       {%- if version == 'admin' %} title="Рабочая версия"{% endif %}
+       {%- if version == 'front' %} title="Опубликованная версия"{% endif %}
+       {%- if not absent %} href="{{ stream.url_for(env, url_name, version=version, item=item.id) }}"
+       {%- endif %}>
+      <span class="version-{{ version }}"></span>
+    </a>
+  {% endfor -%}
+{% endmacro %}
+
+{% macro item_langs(stream, item, url_name="item") %}
+  {%- if stream.langs is defined and stream.items_are_i18n -%}
+    <span style="padding-left: 20px;">&nbsp;</span>
+    {%- for lang, lang_name in stream.langs %}
+      {%- if lang in item._iktomi_langs %}
+        {% set lang_item = item._item_version(env.version, lang) %}
+        {%- set absent = not lang_item or (lang_item.state is defined and lang_item.state in (item.ABSENT, item.DELETED)) %}
+        {%- set private = not absent and lang_item.state is defined and lang_item.state == item.PRIVATE %}
+        {%- set public = not absent and lang_item.state is defined and lang_item.state == item.PUBLIC %}
+        {%- set has_changes = not absent and lang_item.has_unpublished_changes %}
+        <a class="stream-flag
+                  {%- if lang == env.lang %} selected{% endif %}
+                  {%- if absent %} absent{% endif %}
+                  {%- if private %} private{% endif %}
+                  {%- if public %} public{% endif %}
+                  {%- if has_changes %} has-changes{% endif %}"
+           {%- if has_changes %} title="Имеются неопубликованные изменения"{% endif %}
+           {% if lang != env.lang %}
+           href="{{ stream.url_for(env, url_name, version='admin', lang=lang, item=item.id) }}"
+           {%- endif %} >
+          <span class="lang-{{ lang }}"></span>
+        </a>
+      {%- endif %}
+    {%- endfor %}
+  {% endif %}
+{% endmacro %}
+
+{% macro item_versions(stream, item, url_name="item") %}
+{% if item.id %}
+<div class="flags">
+  {{ item_dbs(stream, item, url_name) }}
+  {{ item_langs(stream, item, url_name) }}
+</div>
+{% endif %}
+{% endmacro %}
+
+

@@ -1,0 +1,64 @@
+{% if not no_layout %}
+  {% extends base_template if base_template is defined else "stream_base.html" %}
+{% endif %}
+{%- macro empty_macro() %}{% if caller %}{{ caller() }}{% endif %}{% endmacro %}
+
+{%- if list_item_form is defined %}
+  {%- from list_item_form.template import list_form, thead_content, tfoot with context %}
+{%- else -%}
+  {%- set list_form = empty_macro %}
+  {%- set thead_content = empty_macro %}
+  {%- set tfoot = empty_macro %}
+{%- endif %}
+
+{% macro paginate(paginator) %}
+  {% if paginator %}
+    <div class="pages">
+      {% for p, u in paginator.pages %}
+        {% if p==paginator.page  %}
+          <div class="active">{{ p }}</div>
+        {% elif p==None %}
+          <div>&hellip;</div>
+        {% else %}
+          <a href="{{ u }}"><div>{{ p }}</div></a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endmacro %}
+
+{% set pager = paginate(paginator) %}
+
+{% block stream_items %}
+  {{ pager }}
+  {% block items %}
+    {% call list_form() %}
+      <table class="items">
+        <thead class="init-block" data-block-name="sort-fields">
+          <tr>
+            {% call thead_content() %}
+              {%- for field in list_fields.values() -%}
+                <th style="width: {{ field.width }};" class="field_{{ field.name }}"
+                    {%- if not field.title %} class="no-title"{% endif %}>
+                  {{- field.title -}}
+                </th>
+              {%- endfor -%}
+            {% endcall %}
+          </tr>
+        </thead>
+        {{ tfoot() }}
+
+        <tbody>
+          {% block item_rows %}
+          {% for item in paginator.items %}
+          {{ item_row(item, list_fields=list_fields, url=item_url(item),
+                      row_cls=loop.cycle('odd', 'even'),
+                      row_index=loop.index, list_item_form=list_item_form) }}
+          {% endfor %}
+          {% endblock %}
+        </tbody>
+      </table>
+    {% endcall %}
+  {% endblock %}
+  {{ pager }}
+{% endblock %}

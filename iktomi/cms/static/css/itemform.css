@@ -1,0 +1,209 @@
+.changed-after-publication{
+  background: #FFFFDA;
+  }
+.changed-after-publication>.form-label label:after{
+  content: "";
+  /* Edit by Garrett Knoll from The Noun Project */
+  background-image: url(../images/changed.svg);
+  background-size: 20px;
+  vertical-align: top;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-left: 5px;
+  }
+
+.form .form-row {
+    vertical-align:middle;
+    text-align:left;
+    border-bottom: 1px solid #eee;
+
+    }
+    .form div.form-row {
+      padding: 5px 0 5px 200px;
+      }
+    .form tr.form-row>th {
+      width: 200px;
+      }
+    .form .form-row:after { clear:both; content:"."; display:block; height:0; visibility:hidden; }
+    .form .form-row.full-width {
+        padding-left: 5px;
+        }
+.form .form-row>*>label {
+    padding: 0 10px;
+    }
+.form .form-row .form-label{
+  float: left;
+  width: 0;
+  }
+  .form .form-row .form-label:before{
+    content: "";
+    height: 16px;
+    float: left;
+    diaplay: block;
+    }
+  .form .form-row .form-label label{
+    position: relative;
+    display: inline-block;
+    top: 0;
+    left: -200px;
+    width: 180px;
+  }
+
+.form .form-row>td {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  }
+
+.form .form-row>th {
+  font-weight: normal;
+  font-size: 80%;
+  padding-right: 10px;
+  border-bottom: 1px solid #eee;
+  }
+  .form .form-row>th{
+    vertical-align: top;
+    padding-top: 14px;
+    }
+  .form .form-row.last>th, .form .form-row.last>td {
+    border-bottom: none;
+    }
+.popup .item-form h1{
+  margin-top: 0;
+  }
+
+textarea.bigtext{
+    font-size: 15px;
+    min-height: 350px; min-width:800px;
+}
+
+.autosave-errors{
+  background-color: #fff4e8;
+  }
+
+.autosave-status{
+  position: absolute;
+  right: 0;
+  top: 5px;
+  margin-right: 25px;
+  }
+  .autosave-status>*{
+    display: none;
+    color: #bbb;
+    text-align: right;
+    }
+  .autosave-status[data-status="no-changes"] .autosave-status__no-changes,
+  .autosave-status[data-status="changed"] .autosave-status__changed,
+  .autosave-status[data-status="saving"] .autosave-status__saving,
+  .autosave-status[data-status="lock"] .autosave-status__lock,
+  .autosave-status[data-status="error"] .autosave-status__error,
+  .autosave-status[data-status="draft"] .autosave-status__draft,
+  .autosave-status[data-status="saved"] .autosave-status__saved,
+  .autosave-status[data-autosave-off="true"] .autosave-status__off{
+    display: inline;
+    padding-left: 20px;
+    }
+  .autosave-status__draft,
+  .autosave-status__error{
+    color: #d44;
+    }
+  .autosave-status__saved{
+    color: #5b4;
+    }
+  .autosave-status__error:before,
+  .autosave-status__draft:before{
+    content: "!";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: #e74c3c;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 10px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 5px;
+    }
+
+.autosave-authors{
+  position: absolute;
+  bottom: 0px;
+  right: 25px;
+  color: #ccc;
+  }
+
+
+.hint{
+  display: block;
+  color: #aaa;
+  font-size: 12px;
+  margin: 10px 0;
+  }
+  .hint-right{
+    margin-top: 4px;
+    text-align: right;
+    }
+  .hint:before{
+    content: "?";
+    display: inline-block;
+    background-color: #aaa;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    color: #fff;
+    margin-right: 5px;
+    text-align: center;
+    font-weight: bold;
+    }
+  /*.hint-right:before{
+    float: right;
+    margin-right: 0px;
+    margin-left: 5px;
+    }*/
+  .full-width .hint{
+    margin-left: 180px;
+    }
+  .full-width .form-row .hint{
+    margin-left: 0;
+    }
+
+.has-draft{
+    padding: 10px;
+    margin-bottom: 7px;
+    font-size: 15px;
+    border-bottom: 2px solid #1abc9c;
+    border-top: 2px solid #1abc9c;
+    background: #BBE2DB;
+    }
+.has-draft p:last-child{
+    margin: 0;
+    }
+
+.external-url,
+.referrers-link{
+  display: inline-block;
+  position: relative;
+  height: 20px;
+  width: 20px;
+  /* Link by Martha Ormiston from The Noun Project, published under CC-BY */
+  background-image: url(../images/referrers.svg);
+  background-size: 20px 20px;
+  vertical-align: middle;
+  margin-left: 20px;
+  }
+
+.external-url{
+  background-image: url(../images/external-link.svg);
+  position: relative;
+  }
+  .external-url-dropdown{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    padding-top: 25px;
+    }
+  .external-url:hover .external-url-dropdown{
+    display: block;
+    }

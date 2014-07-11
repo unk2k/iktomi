@@ -1,0 +1,106 @@
+.edit-log-link{
+  display: inline-block;
+  position: relative;
+  height: 20px;
+  width: 20px;
+  /* History by Ema Dimitrova from The Noun Project, published under CC-BY */
+  background-image: url(../images/history.svg);
+  background-size: 20px 20px;
+  vertical-align: middle;
+  margin-left: 20px;
+  }
+
+.edit-log-diff{
+    clear: both;
+    width: 100%;
+    margin-top: 30px;
+    }
+.edit-log-diff>tbody>tr>td{
+    padding: 10px;
+    }
+td.edit-log-del{
+    width: 45%;
+    background: #fee;
+    }
+td.edit-log-ins{
+    width: 45%;
+    background: #efe;
+    }
+
+.edit-log-publish.odd td{
+    background-color: hsl(120,80%,91%);
+    }
+    .edit-log-publish.even td{
+        background-color: hsl(120,80%,93%);
+        }
+.edit-log-revert.odd td,
+.edit-log-unpublish.odd td{
+    background-color: hsl(20,80%,91%);
+    }
+    .edit-log-revert.even td,
+    .edit-log-unpublish.even td{
+        background-color: hsl(20,80%,93%);
+        }
+
+.edit-log-info{
+    padding: 0 10px;
+    overflow: hidden;
+    }
+    .edit-log-info dt{
+        float: left; 
+        clear: left;
+        width: 100px;
+        }
+    .edit-log-info dd{
+        float: left;
+        width: 400px;
+        }
+
+tr.edit-log-level>th{
+    position: relative;
+    font: inherit;
+    text-align: left;
+    vertical-align: top;
+    }
+tr.edit-log-level>th .form-label label{
+    left: 0 !important;
+    top: -3px !important;
+    }
+tr.edit-log-level>th:before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: #eee;
+    border-right: 1px solid #aaa;
+    width: 0;
+    box-sizing: border-box;
+    }
+tr.edit-log-level-0>th{
+    padding-left: 10px;
+    }
+tr.edit-log-level-1>th{
+    padding-left: 15px;
+    }
+    tr.edit-log-level-1>th:before{
+        width: 5px;
+        }
+tr.edit-log-level-2>th{
+    padding-left: 20px;
+    }
+    tr.edit-log-level-2>th:before{
+        width: 10px;
+        }
+tr.edit-log-level-3>th{
+    padding-left: 25px;
+    }
+    tr.edit-log-level-3>th:before{
+        width: 15px;
+        }
+tr.edit-log-level-4>th{
+    padding-left: 30px;
+    }
+    tr.edit-log-level-4>th:before{
+        width: 20px;
+        }

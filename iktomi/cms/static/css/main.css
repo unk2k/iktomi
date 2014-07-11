@@ -1,0 +1,429 @@
+BODY { margin: 0px; padding: 38px 0px 50px 0px; background-color: #ffffff; }
+BODY, TD { font: normal 0.8em Arial, sans-serif; color: #000000; }
+BODY.no-margin { margin: 0; padding: 0px; }
+FORM { margin: 0px; padding: 0px; }
+P, UL, OL { margin-top: 0px; margin-bottom: 1em; }
+A { color: #000000; }
+H1 { color: #000000; font: normal 1.4em Arial, sans-serif; margin: 1.8em 0em 0.2em 0em; }
+.red { color: #990000; }
+.green { color: #006600; }
+.gray { color: #93a0ab; }
+.blue { color: #0066cc; }
+.line DIV, DIV.line { font-size: 1px; height: 3px; _height: 4px; margin: 0px; padding: 0px; display: block; border-bottom: 1px solid #ffffff; }
+input, SELECT { vertical-align: middle; font: normal 1em Arial, sans-serif; }
+input.mini { width: 2em !important; }
+input.small { width: 4em !important; }
+input.medium { width: 15em !important; }
+input.big { width: 600px !important; }
+input[type=checkbox]:disabled{
+  }
+input[type=checkbox]:disabled:before{
+  content: "";
+  border: 1px solid #aaa;
+  vertical-align: middle;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  background: #fff;
+  }
+input[type=checkbox]:disabled:checked:before{
+  content: "✓";
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 12px;
+  }
+/*TEXTAREA { width: 100%; }*/
+textarea {
+    width: 600px;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+input {
+    padding: 3px;
+    border: 1px solid #ccc;
+}
+input[readonly],
+textarea[readonly] {
+    border: none;
+    outline: none;
+    }
+select.big { width: 15.1em; }
+select.date { width: 12em; }
+input.date { width: 10em; }
+input.infilter { width: 10em; }
+
+.header {
+  position: fixed;
+  top: 38px;
+  left: 0;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: 100%;
+  background: white;
+  padding: 20px 20px 10px 20px;
+  z-index: 3;
+  height: 71px;
+  white-space: nowrap;
+  }
+  .popup .header {
+    position: absolute;
+    background: #ebe9e3;
+    right: 32px;
+    top: 10px;
+    padding: 7px 7px 7px 7px;
+    height: 33px;
+    left: 7px;
+    width: auto;
+    }
+  .header .buttons,
+  .header h1 {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    }
+  .header h1 {
+    margin-right: 20px;
+    }
+  .header .buttons{
+    display: block;
+    position: relative;
+    float: right;
+    z-index: 10;
+    white-space: normal;
+    text-align: right;
+    }
+  .header .line { background-color: #e3e6e8; }
+  .buttons__save-actions{
+    display: inline-block;
+    overflow: hidden;
+    height: 30px;
+    vertical-align: top;
+  }
+  .buttons__save-actions:hover{
+    height: 60px;
+  }
+  .buttons__save-hidden{
+    position: absolute;
+    background: #fff;
+    top: 27px;
+    right: 0px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .4s, visibility .1s linear .4s;
+    padding: 0 0 15px 15px;
+    }
+  .buttons__save-hidden .button{
+    display: block;
+    margin-top: 10px;
+    }
+  .buttons__save-actions:hover .buttons__save-hidden{
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .4s, visibility 0s;
+    }
+
+.header+.text{
+  margin-top: 73px !important;
+}
+.popup .header+.text{
+  margin-top: 33px !important;
+}
+
+.content {
+  clear: left;
+  padding:0 20px;
+  }
+.arrow { vertical-align: middle; margin-right: 4px; }
+INPUT.del { margin-left: 10px; vertical-align: top; width: 2em; }
+
+.top TD, .top A { color: #ffffff; }
+.top .line { background-color: #202932; }
+.top .navigation { background: #5e676e; }
+.top .bottomline { width: 100%; height: 100%; }
+/*.top .menu { padding-left: 50px; }
+.top .menu DIV { background: #717b83; float: left; margin-right: 3px; padding: 0.6em 1em 0.8em 1em; }
+.top .menu DIV.active { background: #65a12b; }*/
+.top .links { float: right; padding-right: 50px; }
+.top .links DIV { float: left; padding: 0.6em 0em 0.6em 2em; }
+.top .user A { font-weight: bold; }
+.quit {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  /* Exit by SuperAtic LABS from The Noun Project, published under CC-BY */
+  background-image: url(../images/exit.svg);
+  background-size: 16px 16px;
+  font-size: 0px;
+  vertical-align: top;
+  margin-left: 20px;
+  cursor: pointer;
+  }
+
+.navline { padding: 1.2em 50px; font-weight: bold; }
+.navline DIV { float: left; padding-right: 0.4em; }
+.navline DIV SPAN { font-weight: normal; margin-right: 0.4em; }
+.navline DIV B { color: #000000; }
+.navline DIV A { font-weight: normal; margin-right: 0.4em; }
+
+.navsecond { background-color: #fafafa; margin: 0px 25px 0px 50px; }
+.navsecond .line { background-color: #e3e6e8; }
+.navsecond .links { padding: 0.4em 1.6em 0em 1.6em; }
+.navsecond .links DIV { padding: 0.2em 0em; white-space: nowrap; }
+.navsecond .active A { font-weight: bold; color: #006600; }
+.upper { margin-top: 1.6em; margin-bottom: 1.6em; }
+
+.text { background-color: #fafafa; margin: 0px }
+.text .line { background-color: #e3e6e8; }
+
+.form TD { padding: 0em 0.8em 1.2em 0em; }
+.form .cover, .form .composition DIV { margin-bottom: 0.8em; }
+
+
+
+.info TD { padding: 0em 1em 1.2em 0em; } 
+.info .composition A { color: #53626c; }
+
+.listpages TD { padding: 0em 2em 0.6em 0em; }
+.listpages TD DIV { padding-left: 2em; }
+
+.enter TD { padding: 0px 10px 5px 0px; }
+.enter .entercheckbox { margin-left: 0px; _margin-left: -3px; margin-right: 5px; }
+.enter .gray { width: 6em; }
+
+.tab { float: right; padding-right: 50px; }
+.tab DIV { padding: 0.6em 1em; background-color: #fafafa; margin-left: 3px; }
+.tab DIV.active { color: #006600; font-weight: bold; background-color: #e3e6e8; }
+.tab DIV.active A { color: #006600; text-decoration: none; }
+
+.form .textinput {
+    width: 300px;
+}
+input[type="text"].wide {
+    width: 600px;
+}
+.form .select-checkbox>div {
+    margin-bottom: 5px;
+}
+
+
+
+.error-row * {
+    color: #990;
+}
+
+.overlay {
+    background:#000000 none repeat scroll 0% 0%;
+    visibility: hidden;
+    left:0px;
+    opacity:0;
+    position:fixed;
+    top:0px;
+    right: 0;
+    bottom: 0;
+    z-index:200;
+    }
+    .loading #overlay{
+      -webkit-transition: opacity 2s;
+      -moz-transition: opacity 2s;
+      transition: opacity 2s;
+      visibility: visible;
+      opacity: 0.4;
+      }
+    .overlay.show{
+      visibility: visible;
+      opacity: 0.3;
+      }
+
+.error {
+    font-size:12pt;
+    color:#990000;
+    padding-left:10px;
+}
+
+.form {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width:100%;
+}
+
+
+.hide {
+    display:none !important;
+}
+
+.stream_buttons {
+  padding-left:20px;
+  padding-bottom:5px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.stream_search {
+    width: 400px;
+}
+
+.lang-ru, .lang-en{
+    padding: 0 30px 0 0;
+    background: url(../images/languages/ru.png) transparent center right no-repeat;
+}
+.lang-en{
+    background-image: url(../images/languages/en.png);
+}
+
+.langs-streams .lang-ru,
+.langs-streams .lang-en{
+  width:100%;
+}
+
+
+.langs-streams td {
+  /*width:50%;*/
+  padding: 5px;
+}
+
+.flags {
+  display: inline-block;
+  padding-left: 20px;
+  white-space: nowrap;
+  }
+  a.stream-flag {
+    margin: 0 2px 0 2px;
+    padding: 3px;
+  }
+  a.stream-flag {
+    border: 1px solid transparent;
+    display: inline-block;
+    }
+
+  a.stream-flag .lang-en,
+  a.stream-flag .lang-ru {
+    background-position: center center;
+    }
+  a.stream-flag span{
+    padding: 0 22px 0 0;
+    }
+  a.stream-flag.public span,
+  a.stream-flag.private span{
+    box-shadow: 0 0 4px #fff;
+    }
+  a.stream-flag.absent span{
+    opacity: 0.4;
+    }
+  a.stream-flag.public {
+    background-color: hsl(120,80%,85%);
+    border-color: hsl(120,80%,80%);
+    }
+  a.stream-flag.private {
+    background-color: hsl(20,80%,85%);
+    border-color: hsl(20,80%,80%);
+    }
+  a.stream-flag.selected {
+    border-color: black;
+    }
+  a.stream-flag.has-changes{
+    position:relative;
+    }
+    a.stream-flag.has-changes:after{
+      content: "";
+      width: 15px;
+      height: 15px;
+      /* Edit by Garrett Knoll from The Noun Project */
+      background-image: url(../images/changed.svg);
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: 15px;
+      position:absolute;
+      top: -15px;
+      right: 2px;
+      }
+
+a.stream-flag .version-admin{
+    background-image: url(../images/worker.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 22px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    }
+a.stream-flag .version-front {
+    background-image: url(../images/eye.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 23px;
+    }
+
+.langversion-links {
+  padding: 0px;
+  margin: 0px;
+}
+
+.langversion-links li{
+  margin-bottom: 5px;
+}
+
+.locked {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    /* Lock designed by Ben Johnson from The Noun Project, published under CC-BY */
+    background-image: url(../images/lock.svg);
+    background-size: 30px 30px;
+    }
+    td.field_locked{
+        width: 30px;
+        padding: 0;
+        }
+
+
+td.field_has_unpublished_changes {
+    padding: 0;
+    width: 30px;
+    }
+    td.field_has_unpublished_changes div{
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        /* Edit by Garrett Knoll from The Noun Project */
+        background-image: url(../images/changed.svg);
+        background-size: 30px 30px;
+        }
+td.field_id {
+    width: 30px;
+    }
+
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+
+.item-lock-extra{
+  display: none;
+  }
+  .item-lock-show-extra .item-lock-extra{
+    display: block;
+    }
+
+.item-lock-toggle-extra{
+  cursor: pointer;
+  }
+.item-lock-toggle-extra:before{
+  content: "+";
+  margin-right: 4px;
+  font-weight: normal;
+  }
+.item-lock-show-extra .item-lock-toggle-extra:before{
+  content: "–";
+  }

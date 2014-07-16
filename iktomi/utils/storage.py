@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 class StorageFrame(object):
 
     def __init__(self, _parent_storage=None, **kwargs):
@@ -14,6 +15,7 @@ class StorageFrame(object):
         if '_root_storage' in d:
             del d['_root_storage']
         return d
+
 
 class VersionedStorage(object):
 
@@ -35,7 +37,7 @@ class VersionedStorage(object):
                 return getattr(frame, name)
             except AttributeError:
                 frame = frame._parent_storage
-        #raise AttributeError(name)
+        # raise AttributeError(name)
         raise AttributeError("{} has no attribute {}".format(
                              self.__class__.__name__, name))
 
@@ -47,6 +49,14 @@ class VersionedStorage(object):
 
     def __delattr__(self, name):
         delattr(self._storage, name)
+
+    def update(self, *args, **kwargs):
+        if isinstance(kwargs, VersionedStorage):
+            kwargs = kwargs.as_dict()
+        if args:
+            kwargs.update(*args)
+        for (key, value) in kwargs.iteritems():
+            setattr(self, key, value)
 
     def as_dict(self):
         return self._storage.as_dict()
@@ -71,7 +81,7 @@ class storage_property(storage_property_base):
 
 
 class storage_cached_property(storage_property_base):
-    '''Turns decorated method into storage cached property 
+    '''Turns decorated method into storage cached property
        (method is called only once with VersionedStorage as self).'''
 
     def __get__(self, inst, cls):
@@ -80,6 +90,7 @@ class storage_cached_property(storage_property_base):
         result = self.method(inst._root_storage)
         setattr(inst, self.name, result)
         return result
+
 
 def storage_method(func):
     '''Calls decorated method with VersionedStorage as self'''

@@ -10,7 +10,12 @@ from ..utils import cached_property
 __all__ = ('Template',)
 
 
-class TemplateError(Exception): pass
+class TemplateError(Exception):
+    pass
+
+
+class TemplateNotFound(TemplateError):
+    pass
 
 
 class Template(object):
@@ -42,8 +47,10 @@ class Template(object):
                 template_type = ext[1:]
                 if template_type in self.engines:
                     return file_name[len(d)+1:], self.engines[template_type]
-        raise TemplateError('Template or engine for template "%s" not found. Dirs %r' % \
-                            (pattern, self.dirs))
+        raise TemplateNotFound(
+            'Template or engine for template "%s" not found. Dirs %r' %
+            (pattern, self.dirs)
+        )
 
 
 class BoundTemplate(object):
@@ -82,7 +89,8 @@ class BoundTemplate(object):
         return self.template.render(template_name,
                                     **self._vars(__data, **kw))
 
-    def render_to_response(self, template_name, __data, content_type="text/html"):
+    def render_to_response(self, template_name, __data,
+                           content_type="text/html"):
         resp = self.render(template_name, __data)
         return Response(resp,
                         content_type=content_type)
@@ -94,4 +102,3 @@ def render_to(self, template_name):
         data.env = env
         return Response(env.template.render(template_name, **data))
     return render_to
-

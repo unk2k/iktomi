@@ -143,7 +143,8 @@ class Converter(object):
             #NOTE: by default value for field is in python_data,
             #      but this is not true for FieldList where data
             #      is dynamic, so we set value to None for absent value.
-            value = self._existing_value
+            # value = self._existing_value
+            value = None
         return value
 
     def to_python(self, value):

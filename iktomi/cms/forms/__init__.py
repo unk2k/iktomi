@@ -62,6 +62,6 @@ class ModelForm(Form, DiffFieldSetMixIn):
         for field in fields:
             if isinstance(field, FieldBlock):
                 initial.update(cls._load_initial(item, initial, field.fields))
-            elif field.name:
+            elif field.name and hasattr(item, field.name):
                 initial[field.name] = getattr(item, field.name)
         return initial

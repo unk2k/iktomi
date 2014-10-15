@@ -13,13 +13,15 @@ from ...utils import cached_property
 
 class BaseFile(object):
 
-    def __init__(self, root, name, original_name=None, manager=None):
+    def __init__(self, root, name, original_name=None, manager=None, meta=None):
         '''@root depends on environment of application and @name uniquely
         identifies the file.'''
         self.root = root
         self.name = name
         self.manager = manager
         self.original_name = original_name
+        if meta and isinstance(meta, dict):
+            self.__dict__.update(meta)
 
     @property
     def path(self):
@@ -85,9 +87,9 @@ class BaseFileManager(object):
         self.persistent_root = persistent_root
         self.persistent_url = persistent_url
 
-    def get_persistent(self, name, cls=PersistentFile):
+    def get_persistent(self, name, cls=PersistentFile, meta=None):
         assert name and not ('..' in name or name[0] in '~/'), name
-        persistent = cls(self.persistent_root, name, original_name=None, manager=self)
+        persistent = cls(self.persistent_root, name, original_name=None, manager=self, meta=meta)
         return persistent
 
     def get_persistent_url(self, file, env=None):
@@ -150,12 +152,12 @@ class FileManager(BaseFileManager):
         name = os.urandom(8).encode('hex') + ext
         return TransientFile(self.transient_root, name, self)
 
-    def get_transient(self, name, original_name=None):
+    def get_transient(self, name, original_name=None, meta=None):
         '''Restores TransientFile object with given name.
         Should be used when form is submitted with file name and no file'''
         # security checks: basically no folders are allowed
         assert not ('/' in name or '\\' in name or name[0] in '.~')
-        transient = TransientFile(self.transient_root, name, original_name, self)
+        transient = TransientFile(self.transient_root, name, original_name, self, meta=meta)
         if not os.path.isfile(transient.path):
             raise OSError(errno.ENOENT, 'Transient file has been lost',
                           transient.path)
